@@ -1,0 +1,60 @@
+.faq-heading{
+    display: flex;
+    flex-direction: column;
+    background-color: #2A2A68;
+    margin-top: 10px;
+    width: fit-content;
+    padding: 10px;
+    margin-left: 10px;
+    border-radius: 10px;
+    color: white;
+}
+.faq-page{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 20px;
+}
+
+.faq-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 25px;
+    padding-left: 20px;
+}
+
+.discover-container-btn{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    margin-bottom: 30px;
+}
+
+.discover-btn{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #2A2A68;
+    width: 300px;
+    border-radius: 10px;
+    padding: 10px;
+    color: azure;
+    font-size: 20px;
+    font-family: 'Roboto Serif', serif;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+    margin-top: 40px;
+    margin-right: 5px;
+    
+
+    &:hover {
+        background-color: white;
+        color: #2A2A68;
+    }
+
+    &:focus {
+        outline: none;
+    }
+
+}

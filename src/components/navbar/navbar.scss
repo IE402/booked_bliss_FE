@@ -1,0 +1,186 @@
+@use "../../responsive.scss" as responsive;
+
+nav{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 72px;
+    background-color: #2A2A68;
+    color: #fff;
+    top: 0;
+    right: 0;
+    left: 0;
+    position: absolute;
+    padding: 0 26px;
+
+    a{
+        transition: all 0.4s ease;
+        
+        @include responsive.sm{
+            display: none;
+        }
+
+        &:hover{
+            scale: 1.05;
+        }
+    }
+
+    .navbar-left {
+        .logo {
+            font-size: 30px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        img {
+            width: 50px;
+        }
+
+        span{
+            @include responsive.sm{
+                display: initial;
+            }
+        }
+    }
+
+    .navbar-center {
+        font-size: 18px;
+        display: flex;
+        gap: 20px;
+        text-decoration: underline;
+
+        a{
+            @include responsive.md{
+                display: none;
+            }
+
+            @include responsive.sm{
+                display: none;
+            }
+        }
+    }
+
+    .navbar-right {
+        display: flex;
+        gap: 10px;
+        font-size: 18px;
+
+
+        a{
+            padding: 12px 12px;
+            margin: 10px;
+        }
+
+        .user{
+            display: flex;
+            align-items: center;
+            font-weight: bold;
+
+            img{
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                object-fit: cover;
+                margin-right: 20px;
+            }
+
+            span {
+                @include responsive.sm{
+                    display: none;
+                }
+            }
+
+            .profile{
+                padding: 10px 20px;
+                background-color: #fff;
+                color: #2A2A68;
+                border-radius: 24px;
+                position: relative;
+
+                .notification{
+                    position: absolute;
+                    top: -10px;
+                    right: -10px;
+                    background-color: red;
+                    color: white;
+                    border-radius: 50%;
+                    width: 26px;
+                    height: 26px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                }
+            }
+        }
+
+        .sign {
+            padding: 10px 30px;          
+            background-color: #fff;      
+            color: #2A2A68;              
+            border: 2px solid #2A2A68;   
+            border-radius: 30px;         
+            text-decoration: none;       
+            font-weight: bold;           
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .menuIcon {
+            display: none;
+            z-index: 999;
+
+            img {
+                width: 36px;
+                height: 36px;
+                cursor: pointer;
+            }
+
+            @include responsive.sm{
+                display: inline;
+            }
+        }
+
+        .menu {
+            position: absolute;
+            top: 0;
+            right: -50%;
+            background-color: #2A2A68;
+            color: white;
+            height: 100vh;
+            width: 50%;
+            transition: all 1s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            z-index: 998;
+            display: none;
+
+            &.active{
+                right: 0;
+            }
+
+            @include responsive.md{
+                // display: flex;
+                // flex-direction: column;
+                display: none;
+            }
+
+            @include responsive.sm{
+                display: flex;
+                flex-direction: column;
+            }
+
+            @include responsive.sm{
+                a{
+                    display: initial;
+                }
+            }
+
+            // @include responsive.md{
+            //     display: none;
+            // }
+        }
+
+    }
+}

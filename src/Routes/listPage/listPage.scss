@@ -1,0 +1,125 @@
+@use "../../responsive.scss" as responsive;
+
+.listPage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    // width: 100%;
+    height: 100%;
+
+    @include responsive.sm {
+        height: auto;
+    }
+
+    .head {
+        display: flex;
+        flex-direction: column;
+        // justify-content: center;
+        align-items: center;
+        text-align: center;
+        height: 630px;
+
+        @include responsive.sm {
+            height: auto;
+        }
+
+        .headImg {
+            // position: absolute;
+            left: 0;
+            width: 100%;
+
+            img {
+                object-fit: cover;
+
+                @include responsive.md {
+                    // width: 100%;
+                    // height: auto;
+                    object-fit: cover;
+                }
+
+                @include responsive.sm {
+                    width: 100%;
+                    height: auto;
+                    object-fit: cover;
+                }
+            }
+
+        }
+    }
+
+    .listContent {
+        display: flex;
+        width: 100%;
+        height: 50%;
+
+        @include responsive.md {
+            flex-direction: column;
+        }
+
+        @include responsive.sm {
+            flex-direction: column;
+        }
+
+        .mapContainer {
+            flex: 1;
+            height: 300px;
+            // border-right: 1px #ccc solid;
+
+            @include responsive.md {
+                flex: initial;
+            }
+
+            @include responsive.sm {
+                flex: initial;
+            }
+
+            .filter-sidebar{
+                @include responsive.md {
+                    display: none;
+                }
+    
+                @include responsive.sm {
+                    display: none;
+                }
+            }
+
+            .wrapper {
+                height: 100%;
+                // margin-right: 50px;
+                display: flex;
+                flex-direction: column;
+                // overflow-y: scroll;
+            }
+        }
+
+        .listContainer {
+            flex: 4;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(auto-fill, 450px);
+            grid-auto-flow: dense;
+            gap: 10px;
+            row-gap: 10px;
+            margin-left: 18px;
+            margin-top: 20px;
+            justify-items: center;
+            align-items: center;
+            overflow-y: scroll;
+            scrollbar-width: none;
+            height: 168vh;
+
+
+            @include responsive.md {
+                grid-template-columns: repeat(2, 1fr);
+                flex: initial;
+            }
+
+            @include responsive.sm {
+                grid-template-columns: repeat(1, 1fr);
+                flex: initial;
+                margin: 0;
+            }
+        }
+    }
+}

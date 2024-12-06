@@ -1,0 +1,115 @@
+@use "../../responsive.scss" as responsive;
+.card {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 320px; 
+    height: auto;
+
+    @include responsive.md {
+        margin: 0 20px;
+    }
+
+    @include responsive.sm{
+        margin: 0 34px 20px 34px;
+    }
+
+    .imageContainer {
+        height: 200px;
+
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+    }
+
+    .textContainer {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        gap: 10px;
+        margin: 0 5px;
+
+        img {
+            // width: 20px;
+            height: 20px;
+        }
+
+        .title {
+            height: fit-content; 
+            font-size: 18px;
+            font-weight: bold; 
+            line-height: 1.2;
+            color: #fff; 
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap; /* Đảm bảo không xuống dòng */
+            text-align: left; 
+            transition: all 0.4s ease;
+            max-width: 300px; /* Đặt giới hạn chiều rộng cho title */
+        
+            &:hover {
+                scale: 1.01;
+            }
+        }
+
+        .address{
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: #888;
+        }
+
+        .price {
+            font-size: 18px;
+            font-weight: 300;
+            padding: 5px;
+            border-radius: 5px;
+            background-color: rgba(254, 205, 81, 0.438);
+            width: max-content;
+        }
+        
+        .bottom {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+
+            .features{
+                display: flex;
+                flex-direction: column;
+                font-size: 14px;
+
+                .feature{
+                    display: flex;
+                    align-items: center;
+                    gap: 5px;
+                    padding: 5px;
+                    border-radius: 5px;
+                }
+            }
+
+            .icons{
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+
+                .icon {
+                    border: 1px solid #999;
+                    padding: 2px 5px;
+                    border-radius: 5px;
+                    cursor: pointer;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+
+                    &:hover{
+                        background-color: lightgrey;
+                    }
+                }
+            }
+        }
+    }
+}

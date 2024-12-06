@@ -1,0 +1,22 @@
+@use "../../responsive.scss" as responsive;
+
+.list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, auto);
+    gap: 80px;
+    margin: 20px 80px;
+    padding-bottom: 40px;
+
+    @include responsive.md {
+        grid-template-columns: repeat(2, 1fr);
+        // gap: 50px;
+        margin: 0 1px;
+    }
+
+    @include responsive.sm{
+        grid-template-columns: repeat(1, 1fr);
+        gap: 20px;
+    }
+}
+

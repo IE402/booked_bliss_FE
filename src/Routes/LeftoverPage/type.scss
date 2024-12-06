@@ -1,0 +1,122 @@
+.type__page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    background-color: #f9f9f9;
+}
+
+.type__page__container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.type__page__title {
+    text-align: center;
+    margin-bottom: 20px;
+
+    h1 {
+        font-size: 2rem;
+        color: #2A2A68;
+    }
+}
+
+.type__page_display {
+    margin-top: 50px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+
+    @media (max-width: 1200px) {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    @media (max-width: 900px) {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    @media (max-width: 600px) {
+        grid-template-columns: 1fr;
+    }
+}
+
+.houseItems {
+    display: contents;
+
+    .houseItem {
+        display: flex;
+        flex-direction: column;
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        transition: transform 0.3s;
+        height: 100%;
+
+        &:hover {
+            transform: scale(1.05);
+        }
+
+        .houseItemImg {
+            height: 200px;
+            overflow: hidden;
+
+            img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                display: block;
+            }
+        }
+
+        .houseItemText {
+            padding: 15px;
+            flex-grow: 1;
+
+            .textTitle {
+                h3 {
+                    margin: 0;
+                    font-size: 1.5rem;
+                    color: #2A2A68;
+                }
+            }
+
+            .textContent {
+                p {
+                    margin: 10px 0 0;
+                    color: #555;
+                }
+            }
+        }
+
+        .discover-container-btn {
+            display: flex;
+            flex-direction: row;
+            align-items: flex-end;
+            justify-content: center;
+            margin-bottom: 10px;
+        }
+    }
+}
+
+.discover-btn {
+    display: flex;
+    background-color: #2A2A68;
+    border-radius: 10px;
+    padding: 10px;
+    color: azure;
+    font-size: 20px;
+    font-family: 'Roboto Serif', serif;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+
+    &:hover {
+        background-color: white;
+        color: #2A2A68;
+    }
+
+    &:focus {
+        outline: none;
+    }
+}
