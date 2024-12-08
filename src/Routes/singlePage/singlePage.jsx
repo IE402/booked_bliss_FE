@@ -2,7 +2,7 @@ import Slider from '../../components/slider/Slider';
 import './singlePage.scss'
 // import { singlePostData, userData } from '../../lib/dummydata'
 import Map from '../../components/map/Map'
-import { redirect, useLoaderData, useNavigate } from 'react-router-dom';
+import {  useLoaderData, useNavigate } from 'react-router-dom';
 import DOMPurify from "dompurify";
 import { useContext, useState } from 'react';
 import { AuthContext } from '../../components/context/AuthContext'
@@ -10,6 +10,7 @@ import apiRequest from '../../lib/apiRequest'
 
 function SinglePage() {
   const post = useLoaderData();
+  console.log(post);
   const [saved, setSaved] = useState(post.isSaved);
   const { currentUser } = useContext(AuthContext);
   const navigate = useNavigate();

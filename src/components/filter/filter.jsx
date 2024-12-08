@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './filter.scss';
 import { useSearchParams } from "react-router-dom";
 
@@ -10,9 +10,14 @@ function Filter() {
         city: searchParams.get("city") || "",
         property: searchParams.get("property") || "",
         minPrice: searchParams.get("minPrice") || 0,
-        maxPrice: searchParams.get("maxPrice") || 1000000,
+        maxPrice: searchParams.get("maxPrice") || 20000000,
         bedroom: searchParams.get("bedroom") || 1,
     });
+
+    // Cập nhật searchParams mỗi khi query thay đổi
+    useEffect(() => {
+        setSearchParams(query);
+    }, [query, setSearchParams]); // Chạy khi query thay đổi
 
     const handleCheckboxChange = (field, value) => {
         const values = query[field] ? query[field].split(",") : [];
@@ -27,10 +32,6 @@ function Filter() {
         setQuery({ ...query, [field]: value });
     };
 
-    const handleFilter = () => {
-        setSearchParams(query);
-    };
-
     return (
         <div className="filter-sidebar">
             <div className="filter-section">
@@ -39,9 +40,8 @@ function Filter() {
                     <label key={index}>
                         <input
                             type="checkbox"
-                            checked={query.type.includes(type)}
+                            checked={query.type.split(',').includes(type)}
                             onChange={() => handleCheckboxChange('type', type)}
-                            defaultValue={query.type}
                         />
                         {type}
                     </label>
@@ -58,7 +58,6 @@ function Filter() {
                             max="10000"
                             value={query.minPrice}
                             onChange={(e) => handleSliderChange("minPrice", e.target.value)}
-                            defaultValue={query.minPrice}
                         />
                         {query.minPrice}
                     </label>
@@ -66,11 +65,10 @@ function Filter() {
                         Max:
                         <input
                             type="range"
-                            min="10000"
-                            max="200000"
+                            min="1000000"
+                            max="20000000"
                             value={query.maxPrice}
                             onChange={(e) => handleSliderChange("maxPrice", e.target.value)}
-                            defaultValue={query.maxPrice}
                         />
                         {query.maxPrice}
                     </label>
@@ -78,13 +76,12 @@ function Filter() {
             </div>
             <div className="filter-section">
                 <h3>Filter By: Location</h3>
-                {['Any', 'Ho Chi Minh', 'Ha Noi', 'Binh Dinh', 'Binh Duong', 'Hai Phong', 'London'].map((location, index) => (
+                {['Any', 'Tan Phu', 'Tang Nho Phu A', 'Linh trung', 'Linh Xuan', 'Long Thanh My', 'Di An'].map((location, index) => (
                     <label key={index}>
                         <input
                             type="checkbox"
-                            checked={query.city.includes(location)}
+                            checked={query.city.split(',').includes(location)}
                             onChange={() => handleCheckboxChange('city', location)}
-                            defaultValue={query.location}
                         />
                         {location}
                     </label>
@@ -96,9 +93,8 @@ function Filter() {
                     <label key={index}>
                         <input
                             type="checkbox"
-                            checked={query.property.includes(type)}
+                            checked={query.property.split(',').includes(type)}
                             onChange={() => handleCheckboxChange('property', type)}
-                            defaultValue={query.property}
                         />
                         {type}
                     </label>
@@ -115,14 +111,10 @@ function Filter() {
                             max="10"
                             value={query.bedroom}
                             onChange={(e) => handleSliderChange("bedroom", e.target.value)}
-                            defaultValue={query.bedroom}
                         />
                         {query.bedroom}
                     </label>
                 </div>
-            </div>
-            <div className="filter-btn">
-                <button className='filter-update' onClick={handleFilter}>Update</button>
             </div>
         </div>
     );
