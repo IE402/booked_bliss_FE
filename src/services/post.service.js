@@ -13,4 +13,12 @@ export const postService = {
             return err;
         }
     },
+    async getAllPosts(query){
+        try {
+            const res = await apiRequest.get("/posts",query);
+            return res.data;
+        } catch (err) {
+            return err;
+        }
+    }
 };
