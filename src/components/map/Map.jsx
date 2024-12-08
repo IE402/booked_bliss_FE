@@ -5,12 +5,13 @@ import './map.scss';
 import Pin from '../pin/Pin';
 import { postService } from '../../services/post.service';
 import { useEffect, useState } from 'react';
-function Map({ items }) {
+function Map({ itemCurrent }) {
+    console.log('itemCurrent', itemCurrent);
     const [posts, setPosts] = useState([]);
     async function fetchPosts() {
         const posts = await postService.getAllPosts();
         setPosts(posts);
-        console.log('posts', posts);
+        console.log('posts',posts[0].id,itemCurrent.id, posts[0].id == itemCurrent.id);
         
     }
     useEffect(() => {
@@ -18,9 +19,9 @@ function Map({ items }) {
     }, []);
     
     return (
-        console.log('items', items),
+        // console.log('items', item),
         <MapContainer center={
-            items.length === 1
+            itemCurrent.length === 1
                 // ? [items[0].latitude, items[0].longitude]
                 ? [10.8700089,106.8004792]
 
@@ -35,7 +36,7 @@ function Map({ items }) {
             />
 
             {posts.map(item => (
-                <Pin item={item} key={item.id} />
+                <Pin item={item} isRed={item.id === itemCurrent.id}  key={item.id} />
             ))}
             
 
