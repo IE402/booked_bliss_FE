@@ -1,51 +1,64 @@
 import "./newPostPage.scss";
 import ReactQuill from "react-quill";
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import "react-quill/dist/quill.snow.css";
-import apiRequest from "../../lib/apiRequest";
 import UploadWidget from "../../components/uploadWidget/uploadWidget";
 import { useNavigate } from "react-router-dom";
-
+import { AuthContext } from "../../components/context/AuthContext";
+import { postService } from "../../services/post.service";
+import { PostDto } from "../../Dto/post.dto";
 function NewPostPage() {
+    const {currentUser  } = useContext(AuthContext);
     const [value, setValue] = useState("");
     const [error, setError] = useState("");
     const [images, setImages] = useState([]);
 
+    
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
+
         e.preventDefault();
         const formData = new FormData(e.target);
         const inputs = Object.fromEntries(formData);
 
         try {
-            const res = await apiRequest.post("/posts", {
-                postData: {
-                    title: inputs.title,
-                    price: parseInt(inputs.price),
-                    address: inputs.address,
-                    city: inputs.city,
-                    bedroom: parseInt(inputs.bedroom),
-                    bathroom: parseInt(inputs.bathroom),
-                    type: inputs.type,
-                    property: inputs.property,
-                    latitude: parseFloat(inputs.latitude),
-                    longitude: parseFloat(inputs.longitude),
-                    images: images,
-                },
-                postDetail: {
-                    desc: value,
-                    utilities: inputs.utilities,
-                    pet: inputs.pet,
-                    income: inputs.income,
-                    size: parseInt(inputs.size),
-                    school: parseInt(inputs.school),
-                    bus: parseInt(inputs.bus),
-                    restaurant: parseInt(inputs.restaurant),
-                },
+            const postDto = new PostDto(
+                
+                    {
+                        title: inputs.title,
+                        price: parseInt(inputs.price),
+                        address: inputs.address,
+                        city: inputs.city,
+                        bedroom: parseInt(inputs.bedroom),
+                        bathroom: parseInt(inputs.bathroom),
+                        type: inputs.type,
+                        property: inputs.property,
+                        latitude: parseFloat(inputs.latitude),
+                        longitude: parseFloat(inputs.longitude),
+                        images: images,
+                    },
+                    {
+                        desc: value,
+                        utilities: inputs.utilities,
+                        pet: inputs.pet,
+                        income: inputs.income,
+                        size: parseInt(inputs.size),
+                        school: parseInt(inputs.school),
+                        bus: parseInt(inputs.bus),
+                        restaurant: parseInt(inputs.restaurant),
+                    },
+                    currentUser.id,
+                
 
-            });
-            navigate("/" + res.data.id)
+            );
+            console.log('okokoko', postDto.postData);
+
+            console.log('postDto', postDto);
+            
+            const res = await postService.createPost(postDto);
+            console.log("Post created successfully:", res);
+            navigate("/" + res.id)
 
         } catch (err) {
             console.log(err);

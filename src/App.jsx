@@ -9,8 +9,8 @@ import {
 import { Layout, RequireAuth } from "./routes/layout/layout";
 import SinglePage from "./routes/singlePage/SinglePage";
 import Profile from "./routes/UserProfile/userProfile";
-import NewPostPage from "./routes/newPostPage/newPostPage";
 import HomePage from "./Routes/homePage/homePage";
+import NewPostPage from "./Routes/newPostPage/newPostPage";
 import Register from "./routes/register/register";
 import Login from "./routes/login/login";
 import ProfileUpdatePage from "./routes/profileUpdatePage/profileUpdatePage"
@@ -20,9 +20,13 @@ import TypeofHouses from "./Routes/LeftoverPage/TypeOfHouses";
 import FAQPage from "./Routes/FAQPage/FAQPAge";
 import Cooperation from "./Routes/LeftoverPage/Cooperation";
 import Agents from "./Routes/LeftoverPage/Agents";
-import ChatPage from "./routes/Chat/Chat";
+// import ChatPage from "./routes/Chat/Chat";
+import { AuthContext } from "./components/context/AuthContext";
+import { useContext } from "react";
 
 function App() {
+  const {currentUser  } = useContext(AuthContext);
+  console.log(currentUser);
 
   const router = createBrowserRouter([
     {
@@ -97,11 +101,11 @@ function App() {
           path: "/add",
           element: <NewPostPage />,
         },
-        {
-          path: "/chat",
-          element: <ChatPage />,
-          loader: chatPageLoader,
-        },
+        // {
+        //   path: "/chat",
+        //   element: <ChatPage />,
+        //   loader: chatPageLoader,
+        // },
       ],
     },
   ]);
