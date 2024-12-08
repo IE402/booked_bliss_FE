@@ -9,6 +9,7 @@ import './listPage.scss';
 
 function ListPage() {
     const data = useLoaderData();
+    console.log(data.postResponse);
 
     return (
         <div className="listPage">
