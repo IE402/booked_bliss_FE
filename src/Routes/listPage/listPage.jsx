@@ -13,13 +13,6 @@ function ListPage() {
 
     return (
         <div className="listPage">
-            {/* Header Section */}
-            <div className="head">
-                <div className="headImg">
-                    <img src="/headImg.png" alt="Header" />
-                </div>
-                <SearchBar />
-            </div>
 
             {/* Main Content */}
             <div className="listContent">

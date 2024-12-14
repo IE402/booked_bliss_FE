@@ -23,7 +23,7 @@ import Agents from "./Routes/LeftoverPage/Agents";
 import ChatPage from "./routes/Chat/Chat";
 import { AuthContext } from "./components/context/AuthContext";
 import { useContext } from "react";
-
+import MapPage from "./Routes/MapPage/MapPage";
 function App() {
   const {currentUser  } = useContext(AuthContext);
   console.log(currentUser);
@@ -81,6 +81,11 @@ function App() {
         {
           path: "/agents",
           element: <Agents />,
+        },
+        {
+          path: "/map",
+          element: <MapPage />,
+          loader: listPageLoader,
         },
       ],
     },

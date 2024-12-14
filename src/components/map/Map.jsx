@@ -21,11 +21,11 @@ function Map({ itemCurrent }) {
     return (
         // console.log('items', item),
         <MapContainer center={
-            itemCurrent.length === 1
-                // ? [items[0].latitude, items[0].longitude]
-                ? [10.8700089,106.8004792]
+            // itemCurrent.length === 1
+            //     // ? [items[0].latitude, items[0].longitude]
+            //     ? [10.8700089,106.8004792]
 
-                : [10.8700089,106.8004792]
+                 [10.8700089,106.8004792]
         }
             zoom={11}
             scrollWheelZoom={false}
