@@ -145,7 +145,7 @@ function SinglePage() {
       <div className="location">
         <p className="title">Location</p>
         <div className="mapContainer">
-          <Map itemCurrent={post} />
+          <Map itemCurrents={[post]} />
         </div>
 
       </div>

@@ -13,13 +13,6 @@ function ListPage() {
 
     return (
         <div className="listPage">
-            {/* Header Section */}
-            <div className="head">
-                <div className="headImg">
-                    <img src="/headImg.png" alt="Header" />
-                </div>
-                <SearchBar />
-            </div>
 
             {/* Main Content */}
             <div className="listContent">
@@ -30,7 +23,7 @@ function ListPage() {
                             resolve={data.postResponse}
                             errorElement={<p>Error loading map!</p>}
                         >
-                            {(postResponse) => <Map items={postResponse.data} />}
+                            {(postResponse) => <Map itemCurrents={postResponse.data} />}
                         </Await>
                     </Suspense>
                     <Filter />

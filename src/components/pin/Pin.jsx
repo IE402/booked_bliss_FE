@@ -8,26 +8,28 @@ function Pin({ item, isRed }) {
 
   // Tạo icon mặc định của Leaflet
   const redIcon = new L.Icon({
+    iconUrl: 'https://www.vtsc.one/wp-content/uploads/2022/07/gps.png', // Sử dụng icon mặc định của Leaflet
+    iconSize: [32, 41],  // Kích thước của icon
+    iconAnchor: [12, 41],  // Mốc neo của icon
+    popupAnchor: [1, -34],  // Vị trí của popup
+    // shadowUrl: 'https://unpkg.com/leaflet/dist/images/marker-shadow.png',
+    shadowSize: [41, 41],
+  });
+        
+  const defaultIcon = new L.Icon({
     iconUrl: 'https://unpkg.com/leaflet/dist/images/marker-icon-2x.png', // Sử dụng icon mặc định của Leaflet
     iconSize: [25, 41],  // Kích thước của icon
     iconAnchor: [12, 41],  // Mốc neo của icon
     popupAnchor: [1, -34],  // Vị trí của popup
-    shadowUrl: 'https://unpkg.com/leaflet/dist/images/marker-shadow.png',
-    shadowSize: [41, 41],
-  });
-
-  const defaultIcon = new L.Icon({
-    iconUrl: './pin.png', // Sử dụng icon mặc định của Leaflet
-    iconSize: [25, 41],  // Kích thước của icon
-    iconAnchor: [12, 41],  // Mốc neo của icon
-    popupAnchor: [1, -34],  // Vị trí của popup
-    shadowUrl: 'https://unpkg.com/leaflet/dist/images/marker-shadow.png',
+    // shadowUrl: 'https://unpkg.com/leaflet/dist/images/marker-shadow.png',
     shadowSize: [41, 41],
   });
 
   // Xử lý khi người dùng nhấn vào ảnh
   const handleClick = () => {
     navigate('/' + item.id);
+    window.scrollTo(0, 0);
+    
   };
 
   return (
