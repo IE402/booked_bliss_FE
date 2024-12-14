@@ -3,8 +3,9 @@ import L from 'leaflet';
 import { useNavigate } from 'react-router-dom';
 import './pin.scss';
 
-function Pin({ item, isRed }) {
+function Pin({ item, isRed, onClick }) {
   const navigate = useNavigate();
+  
 
   // Tạo icon mặc định của Leaflet
   const redIcon = new L.Icon({
@@ -33,7 +34,16 @@ function Pin({ item, isRed }) {
   };
 
   return (
-    <Marker position={[item.latitude, item.longitude]} icon={isRed ? redIcon : defaultIcon}>
+    <Marker position={[item.latitude, item.longitude]} icon={isRed ? redIcon : defaultIcon}
+    eventHandlers={{
+      click: (e) => {
+        console.log("Marker clicked:", item);
+        if (onClick) {
+          onClick(item);
+        }
+      }
+    }}
+    >
       <Popup autoClose={false}>
         <div className="popupContainer">
           <img onClick={handleClick} src={item.images[0]} alt={item.title} />
