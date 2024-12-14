@@ -23,7 +23,7 @@ function ListPage() {
                             resolve={data.postResponse}
                             errorElement={<p>Error loading map!</p>}
                         >
-                            {(postResponse) => <Map items={postResponse.data} />}
+                            {(postResponse) => <Map itemCurrents={postResponse.data} />}
                         </Await>
                     </Suspense>
                     <Filter />

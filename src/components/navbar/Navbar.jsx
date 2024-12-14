@@ -25,8 +25,8 @@ function Navbar() {
                 </a>
             </div>
             <div className="navbar-center">
-                <a href="/agents">Agents</a>
-                <a href="/houses">Type of House</a>
+                <a href="/Map">Map</a>
+                <a href="/list">Tìm kiếm Phòng</a>
                 <a href="/contactus">Contact Us</a>
                 <a href="/coop">Cooperation</a>
             </div>
@@ -52,7 +52,7 @@ function Navbar() {
                     <img src="/menu.png" alt="" onClick={() => setOpen((prev) => !prev)} />
                 </div>
                 <div className={open ? "menu active" : "menu"}>
-                    <a href="/">Agents</a>
+                    <a href="/map">Agents</a>
                     <a href="/houses">Type of House</a>
                     <a href="/contactus">Contact Us</a>
                     <a href="/">Cooperation</a>
