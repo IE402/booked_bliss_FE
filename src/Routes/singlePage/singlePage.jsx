@@ -10,7 +10,7 @@ import apiRequest from '../../lib/apiRequest'
 
 function SinglePage() {
   const post = useLoaderData();
-  console.log(post);
+  console.log("single post --------",post);
   const [saved, setSaved] = useState(post.isSaved);
   const { currentUser } = useContext(AuthContext);
   const navigate = useNavigate();
@@ -41,7 +41,7 @@ function SinglePage() {
                   <img src="/pin.png" alt="" />
                   <span>{post.address}</span>
                 </div>
-                <div className="price">$ {post.price}</div>
+                <div className="price"> {post.price} VND</div>
               </div>
               <div className="user">
                 <img src={post.user.avatar} alt="" />
@@ -59,7 +59,7 @@ function SinglePage() {
       <div className="buttons">
         <button>
           <img src="/chat.png" alt="" />
-          Send a Message
+          Nhắn Tin
         </button>
         <button
           onClick={handleSave}

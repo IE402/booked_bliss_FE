@@ -48,17 +48,17 @@ function HomePage() {
       </div>
       <div className="head">
         <div className="headText">
-          <h1>YOUR HOME WE CARE</h1>
-          <span>FIND YOUR HOUSE THAT SUITS YOU</span>
-          <p>Want to find a home? We ready to help you find one</p>
+          <h1>TÌM KIẾM PHÒNG TRỌ</h1>
+          <span>Tìm kiếm phòng khu vực làng đại học</span>
+          <p>Bạn đang tìm phòng? Chúng tôi sẵn sàng giúp bạn</p>
         </div>
         <SearchBar />
       </div>
       <div className="recentHome">
         <div className="text">
-          <h3>Our Recent Homes</h3>
+          <h3>Phòng trọ gần đây</h3>
           <span>
-            <Link to={`/list`}>Explore All</Link>
+            <Link to={`/list`}>Xem tất cả</Link>
           </span>
         </div>
         <div className="homeItem">
