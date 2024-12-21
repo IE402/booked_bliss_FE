@@ -21,14 +21,14 @@ function Navbar() {
             <div className="navbar-left">
                 <a href="/" className="logo">
                     <img src="/logo.png" alt="Logo" />
-                    <span>Booked Bliss</span>
+                    <span>Tìm phòng trọ</span>
                 </a>
             </div>
             <div className="navbar-center">
                 <a href="/Map">Map</a>
                 <a href="/list">Tìm kiếm Phòng</a>
-                <a href="/contactus">Contact Us</a>
-                <a href="/coop">Cooperation</a>
+                <a href="/contactus">Đóng góp ý kiến</a>
+                <a href="/coop">Hợp tác</a>
             </div>
             <div className="navbar-right">
                 {currentUser ? (
@@ -37,14 +37,14 @@ function Navbar() {
                         <span>{currentUser.username}</span>
                         <Link className="profile" to="/profile">
                             {number > 0 && <div className="notification">{number}</div>}
-                            <span>Profile</span>
+                            <span>Trang cá nhân</span>
                         </Link>
                     </div>
                 ) : (
                     <>
-                        <a href="/login" className="sign">Sign In</a>
+                        <a href="/login" className="sign">Đăng nhập</a>
                         <a href="/register" className="sign">
-                            Sign Up
+                            Đăng ký
                         </a>
                     </>
                 )}

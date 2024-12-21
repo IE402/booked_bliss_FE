@@ -76,7 +76,7 @@ function HomePage() {
       </div>
       <div className="whatWeDo">
         <div className="wwdcontent">
-          <h3>What We Do?</h3>
+          <h3>Bạn muốn tìm phòng?</h3>
           <div className="action">
             <div className="rent">
               <img src="/rent.png" alt="" />
@@ -86,12 +86,12 @@ function HomePage() {
             </div>
           </div>
           <span>
-            <Link to={`/list`}>Discover All</Link>
+            <Link to={`/list`}>Hiển thị tất cả</Link>
           </span>
         </div>
       </div>
       
-      <div className="peopleSay">
+      {/* <div className="peopleSay">
         <h3>What People Say About Us?</h3>
         <div className="peopleItems">
           <div className="peopleItem">
@@ -147,7 +147,7 @@ function HomePage() {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
     </div>
   )
 }

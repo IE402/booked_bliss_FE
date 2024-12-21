@@ -80,7 +80,7 @@ function Profile() {
             {/* edit profile btn */}
             <Link to={`/profile/update`}>
               <div className="profile-edit-container">
-                <button className="edit-btn">Edit Profile</button>
+                <button className="edit-btn">Chỉnh sửa</button>
               </div>
             </Link>
 
@@ -103,7 +103,7 @@ function Profile() {
       {/* current post section */}
       <div className="align">
         <div className="current-post-tittle">
-          <h1>Your Current Posts</h1>
+          <h1>Phòng trọ của bạn</h1>
         </div>
         {/* create new post btn*/}
         <div className="create-post-container">
@@ -112,7 +112,7 @@ function Profile() {
               <span className="icon-container">
                 <img src="/plus.png" alt="plus" className="icon" />
               </span>
-              Create New Post
+              Thêm phòng trọ
             </button>
           </Link>
         </div>

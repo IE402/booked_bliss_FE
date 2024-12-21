@@ -35,7 +35,7 @@ function Filter() {
     return (
         <div className="filter-sidebar">
             <div className="filter-section">
-                <h3>Filter By: Type</h3>
+                <h3>Lọc theo: Loại</h3>
                 {['Buy', 'Rent'].map((type, index) => (
                     <label key={index}>
                         <input
@@ -48,10 +48,10 @@ function Filter() {
                 ))}
             </div>
             <div className="filter-section">
-                <h3>Filter By: Price</h3>
+                <h3>Lọc theo: Giá</h3>
                 <div className="slider-container">
                     <label className="slider-item">
-                        Min:
+                        Thấp nhất:
                         <input
                             type="range"
                             min="1"
@@ -62,7 +62,7 @@ function Filter() {
                         {query.minPrice}
                     </label>
                     <label className="slider-item">
-                        Max:
+                        Cao nhất:
                         <input
                             type="range"
                             min="1000000"
@@ -75,7 +75,7 @@ function Filter() {
                 </div>
             </div>
             <div className="filter-section">
-                <h3>Filter By: Location</h3>
+                <h3>Lọc theo: Khu vực</h3>
                 {['Any', 'Tan Phu', 'Tang Nho Phu A', 'Linh trung', 'Linh Xuan', 'Long Thanh My', 'Di An'].map((location, index) => (
                     <label key={index}>
                         <input
@@ -88,7 +88,7 @@ function Filter() {
                 ))}
             </div>
             <div className="filter-section">
-                <h3>Filter By: Property</h3>
+                <h3>Lọc theo: Loại</h3>
                 {['House', 'Apartment', 'Condo', 'Land'].map((type, index) => (
                     <label key={index}>
                         <input
@@ -101,7 +101,7 @@ function Filter() {
                 ))}
             </div>
             <div className="filter-section">
-                <h3>Filter By: Bedroom</h3>
+                <h3>Lọc theo: số phòng ngủ</h3>
                 <div className="slider-container">
                     <label className="slider-item">
                         Bedroom:

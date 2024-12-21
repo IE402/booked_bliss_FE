@@ -91,15 +91,15 @@ function SinglePage() {
       <div className="features">
         {/* General */}
         <div className="featureContainer">
-          <p className="title">General</p>
+          <p className="title">Tổng quan</p>
           <div className="feature">
             <img src="/utility.png" alt="" />
             {/* <span>Renter is responsible</span> */}
             {
               post.postDetail.utilities === "owner" ? (
-                <p>Owner is responsible</p>
+                <p>Chủ trọ chịu trách nhiệm</p>
               ) : (
-                <p>Tenant is responsible</p>
+                <p>Người thuê chịu trách nhiệm</p>
               )}
           </div>
           <div className="feature">
@@ -107,54 +107,54 @@ function SinglePage() {
             {/* <span>Pet Allowed</span> */}
             {
               post.postDetail.pet === "allowed" ? (
-                <p>Pet allowed</p>
+                <p>Được nuôi thú cưng</p>
               ) : (
-                <p>Tenant is not allowed</p>
+                <p>Không được nuôi thú cưng</p>
               )}
           </div>
           <div className="feature">
             <img src="/fee.png" alt="" />
             {/* <span>Property Policy</span> */}
-            <p>{post.postDetail.income}</p>
+            <p>Tối đa: {post.postDetail.income} người</p>
           </div>
         </div>
         {/* Size */}
         <div className="featureContainer">
-          <p className="title">Sizes</p>
+          <p className="title">Chi tiết</p>
           <div className="feature">
             <img src="/area.png" alt="" />
-            <span>{post.postDetail.size} sqft</span>
+            <span>{post.postDetail.size} m2</span>
           </div>
 
           <div className="feature">
             <img src="/bed.png" alt="" />
-            <span>{post.bedroom} beds</span>
+            <span>{post.bedroom} phòng ngủ</span>
           </div>
 
           <div className="feature">
             <img src="/bathroom.png" alt="" />
-            <span>{post.bathroom} bathroom</span>
+            <span>{post.bathroom} phòng tắm</span>
           </div>
         </div>
         {/* Nearby Places */}
         <div className="places">
-          <p className="title">Nearby Places</p>
+          <p className="title">Địa điểm xung quanh</p>
           <div className="place">
             <img src="/school.png" alt="" />
-            <span>School</span>
-            <p>{post.postDetail.school > 999 ? post.postDetail.school / 1000 + "km" : post.postDetail.school + "m"} away</p>
+            <span>Trường học</span>
+            <p>khoảng {post.postDetail.school > 999 ? post.postDetail.school / 1000 + "km" : post.postDetail.school + "m"} </p>
           </div>
 
           <div className="place">
             <img src="/bus.png" alt="" />
-            <span>Bus Stop</span>
-            <p>{post.postDetail.bus}m away</p>
+            <span>Trạm xe bus</span>
+            <p>khoảng {post.postDetail.bus}m </p>
           </div>
 
           <div className="place">
             <img src="/restaurant.png" alt="" />
-            <span>Restaurant</span>
-            <p>{post.postDetail.restaurant}m away</p>
+            <span>Chợ</span>
+            <p>khoảng {post.postDetail.restaurant}m </p>
           </div>
         </div>
       </div>
