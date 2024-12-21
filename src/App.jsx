@@ -20,10 +20,10 @@ import TypeofHouses from "./Routes/LeftoverPage/TypeOfHouses";
 import FAQPage from "./Routes/FAQPage/FAQPAge";
 import Cooperation from "./Routes/LeftoverPage/Cooperation";
 import Agents from "./Routes/LeftoverPage/Agents";
-import ChatPage from "./routes/Chat/Chat";
 import { AuthContext } from "./components/context/AuthContext";
 import { useContext } from "react";
 import MapPage from "./Routes/MapPage/MapPage";
+import ChatPage from "./Routes/Chat/Chat";
 function App() {
   const {currentUser  } = useContext(AuthContext);
   console.log(currentUser);
@@ -106,11 +106,11 @@ function App() {
           path: "/add",
           element: <NewPostPage />,
         },
-        {
-          path: "/chat",
-          element: <ChatPage />,
-          loader: chatPageLoader,
-        },
+        // {
+        //   path: "/chat",
+        //   element: <ChatPage />,
+        //   loader: chatPageLoader,
+        // },
       ],
     },
   ]);

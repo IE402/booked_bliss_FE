@@ -3,117 +3,174 @@ import "leaflet/dist/leaflet.css";
 import "./map.scss";
 import Pin from "../pin/Pin";
 import { postService } from "../../services/post.service";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import { useParams } from "react-router-dom";
-import L from "leaflet"; // Để sử dụng leaflet-routing-machine
-import "leaflet-routing-machine/dist/leaflet-routing-machine.css"; // Import CSS cho routing machine
+import L from "leaflet";
+import "leaflet-routing-machine/dist/leaflet-routing-machine.css";
 import "leaflet-routing-machine";
+import { Universitys } from "../../data/university";
+import { redIcon, UniversityIcon, districtColors } from "./Icon";
+
+const DisplayMode = {
+  ALL_POSTS: 'ALL_POSTS',
+  UNIVERSITY_RADIUS: 'UNIVERSITY_RADIUS',
+};
+
+// Định nghĩa các giá trị radius có sẵn
+const RADIUS_OPTIONS = [
+  { value: 1000, label: '1km' },
+  { value: 2000, label: '2km' },
+  { value: 3000, label: '3km' },
+  { value: 5000, label: '5km' },
+];
 
 function Map({ itemCurrents }) {
-  console.log("itemCurrent", itemCurrents[0]);
-  const [posts, setPosts] = useState([]);
+  // Core states
   const [currentPosition, setCurrentPosition] = useState([10.8744082, 106.8015733]);
-  const [highlightedDistrict, setHighlightedDistrict] = useState(null);
-  const [loading, setLoading] = useState(true);
   const [map, setMap] = useState(null);
-  const [routeControl, setRouteControl] = useState(null);
-  const { id } = useParams();
   const [selectedItem, setSelectedItem] = useState(itemCurrents[0]);
+  const { id } = useParams();
+
+  // Feature states
+  const [displayMode, setDisplayMode] = useState(DisplayMode.ALL_POSTS);
+  const [showUniversityMarkers, setShowUniversityMarkers] = useState(false);
+  const [postsByUniversity, setPostsByUniversity] = useState([]);
   const [geojsonData, setGeojsonData] = useState(null);
+  const [highlightedDistrict, setHighlightedDistrict] = useState(null);
+  const [selectedRadius, setSelectedRadius] = useState(RADIUS_OPTIONS[0].value);
+  const [selectedUniversity, setSelectedUniversity] = useState(null);
 
-  async function fetchPosts() {
-    const posts = await postService.getAllPosts();
-    setPosts(posts);
-  }
+  // Refs for cleanup
+  const routeControlRef = useRef(null);
+  const radiusCirclesRef = useRef([]);
 
+  // Load GeoJSON data
   useEffect(() => {
-    fetchPosts();
-  }, []);
-
-  useEffect(() => {
-    fetch("src/components/map/data.json")
-      .then((res) => res.json())
-      .then((data) => {
+    const loadGeoJSON = async () => {
+      try {
+        const response = await fetch("src/components/map/data.json");
+        if (!response.ok) throw new Error('Failed to load GeoJSON data');
+        const data = await response.json();
         setGeojsonData(data);
-      });
+      } catch (error) {
+        console.error("Error loading GeoJSON:", error);
+      }
+    };
+
+    loadGeoJSON();
   }, []);
 
-  const districtColors = {
-    "Di An": "#FF6347", // Màu đỏ cho quận 1
-    "Linh Xuan": "#1E90FF", // Màu xanh dương cho quận 2
-    "Linh Trung": "#32CD32", // Màu xanh lá cho quận 3
-    "Tang Nhon Phu A": "#FFD700", // Màu vàng cho quận 4
-    "Tan Phu": "#8A2BE2", // Màu tím cho quận 5
-    "District 6": "#FF4500", // Màu cam cho quận 6
+  // Cleanup effect
+  useEffect(() => {
+    return () => {
+      if (routeControlRef.current && map) {
+        map.removeControl(routeControlRef.current);
+      }
+      radiusCirclesRef.current.forEach(circle => {
+        if (map) map.removeLayer(circle);
+      });
+    };
+  }, [map]);
 
-  };
-  
+  // Update radius effect
+  useEffect(() => {
+    if (selectedUniversity) {
+      renderHostelsInRadius(selectedUniversity);
+    }
+  }, [selectedRadius]);
 
-  const onEachFeature = (feature, layer) => {
+  const onEachFeature = useCallback((feature, layer) => {
     layer.on({
       click: () => {
         setHighlightedDistrict(feature.name);
-        // Cập nhật URL khi click vào quận huyện
         history.push(`/Map?type=&city=${encodeURIComponent(feature.name)}`);
       },
     });
 
-    // Sử dụng màu của quận từ districtColors
     const districtName = feature.name;
-    const fillColor = districtColors[districtName] || "#D3D3D3"; // Nếu không có màu, dùng màu mặc định
+    const fillColor = districtColors[districtName] || "#D3D3D3";
 
-    if (highlightedDistrict === districtName) {
-      layer.setStyle({
-        weight: 5,
-        color: "red", // Màu viền khi highlight
-        fillOpacity: 0.7,
-        fillColor: fillColor, // Màu nền khi highlight
-      });
-    } else {
-      layer.setStyle({
-        weight: 1,
-        color: "gray", // Màu viền mặc định
-        fillOpacity: 0.3,
-        fillColor: fillColor, // Màu nền mặc định
-      });
-    }
-  };
+    layer.setStyle({
+      weight: highlightedDistrict === districtName ? 5 : 1,
+      color: highlightedDistrict === districtName ? "red" : "gray",
+      fillOpacity: highlightedDistrict === districtName ? 0.7 : 0.3,
+      fillColor,
+    });
+  }, [highlightedDistrict]);
 
-  const handlePinClick = (item) => {
-    setSelectedItem(item); // Lưu lại item được chọn
-  };
+  const handleCalculateRoute = useCallback(() => {
+    if (!map || !selectedItem) return;
 
-  const handleCalculateRoute = () => {
-    if (!map) {
-      console.log("Map object is not initialized.");
-      return;
+    if (routeControlRef.current) {
+      map.removeControl(routeControlRef.current);
     }
 
-    if (selectedItem) {
-      if (routeControl && L.Routing) {
-        map.removeControl(routeControl); // Xóa tuyến đường cũ trước khi vẽ tuyến đường mới
-      }
-
+    try {
       const route = L.Routing.control({
         waypoints: [
-          L.latLng(currentPosition[0], currentPosition[1]), // Current location
-          L.latLng(selectedItem.latitude, selectedItem.longitude), // Selected item location
+          L.latLng(currentPosition[0], currentPosition[1]),
+          L.latLng(selectedItem.latitude, selectedItem.longitude),
         ],
         routeWhileDragging: true,
         instructions: false,
       }).addTo(map);
 
-      setRouteControl(route); // Lưu đối tượng routing control để có thể xóa sau này
+      routeControlRef.current = route;
+    } catch (error) {
+      console.error("Error calculating route:", error);
     }
-  };
+  }, [map, selectedItem, currentPosition]);
 
-  const redIcon = new L.Icon({
-    iconUrl: "https://www.vtsc.one/wp-content/uploads/2022/07/gps.png", // Sử dụng icon mặc định của Leaflet
-    iconSize: [32, 41], // Kích thước của icon
-    iconAnchor: [12, 41], // Mốc neo của icon
-    popupAnchor: [1, -34], // Vị trí của popup
-    shadowSize: [41, 41],
-  });
+
+  const renderHostelsInRadius = useCallback((university) => {
+    if (!map) return;
+
+    setSelectedUniversity(university);
+
+    // Clear existing circles
+    radiusCirclesRef.current.forEach(circle => map.removeLayer(circle));
+    radiusCirclesRef.current = [];
+
+    try {
+      // Create new circle with selected radius
+      const circle = L.circle([university.latitude, university.longitude], {
+        color: "blue",
+        fillColor: "blue",
+        fillOpacity: 0.2,
+        radius: selectedRadius,
+      }).addTo(map);
+
+      radiusCirclesRef.current.push(circle);
+
+      // Filter posts within selected radius
+      const postsInRadius = itemCurrents.filter(itemCurrent => {
+        const distance = map.distance(
+          [university.latitude, university.longitude],
+          [itemCurrent.latitude, itemCurrent.longitude]
+        );
+        return distance <= selectedRadius;
+      });
+
+      setPostsByUniversity(postsInRadius);
+      setDisplayMode(DisplayMode.UNIVERSITY_RADIUS);
+    } catch (error) {
+      console.error("Error rendering radius search:", error);
+    }
+  }, [map, itemCurrents, selectedRadius]);
+
+  const toggleUniversityMarkers = useCallback(() => {
+    setShowUniversityMarkers(prev => !prev);
+    if (displayMode === DisplayMode.UNIVERSITY_RADIUS) {
+      setDisplayMode(DisplayMode.ALL_POSTS);
+      setSelectedUniversity(null);
+      radiusCirclesRef.current.forEach(circle => map?.removeLayer(circle));
+      radiusCirclesRef.current = [];
+    }
+  }, [displayMode, map]);
+
+  const handlePinClick = useCallback((item) => {
+    setSelectedItem(item);
+  }, []);
 
   return (
     <MapContainer
@@ -127,7 +184,9 @@ function Map({ itemCurrents }) {
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
-      <Marker position={[currentPosition[0], currentPosition[1]]} icon={redIcon}>
+      
+      {/* Current position marker */}
+      <Marker position={currentPosition} icon={redIcon}>
         <Popup autoClose={false}>
           <div className="popupContainer">
             <div className="textContainer">
@@ -137,23 +196,88 @@ function Map({ itemCurrents }) {
         </Popup>
       </Marker>
 
-      {itemCurrents.map((item) => (
-        <Pin
-          item={item}
-          isRed={item.id === id}
+      {/* Display posts based on mode */}
+      {displayMode === DisplayMode.ALL_POSTS && 
+        itemCurrents.map(item => (
+          <Pin
+            item={item}
+            isRed={item.id === id}
+            key={item.id}
+            onClick={handlePinClick}
+          />
+        ))
+      }
+      
+      {displayMode === DisplayMode.UNIVERSITY_RADIUS &&
+        postsByUniversity.map(item => (
+          <Pin
+            item={item}
+            isRed={item.id === id}
+            key={item.id}
+            onClick={handlePinClick}
+          />
+        ))
+      }
+
+      {/* University markers */}
+      {showUniversityMarkers && Universitys.map(item => (
+        <Marker
+          position={[item.latitude, item.longitude]}
+          icon={UniversityIcon}
           key={item.id}
-          onClick={handlePinClick}
-        />
+        >
+          <Popup autoClose={false}>
+            <div className="popupContainer">
+              <div className="textContainer">
+                <h3>{item.name}</h3>
+                <span>{item.fullname}</span>
+                <div className="controls">
+                  {/* Radius selection dropdown */}
+                  <select 
+                    value={selectedRadius}
+                    onChange={(e) => setSelectedRadius(Number(e.target.value))}
+                    className="radiusSelect"
+                  >
+                    {RADIUS_OPTIONS.map(option => (
+                      <option key={option.value} value={option.value}>
+                        {option.label}
+                      </option>
+                    ))}
+                  </select>
+                  <button
+                    onClick={() => renderHostelsInRadius(item)}
+                    className="showPostsBtn"
+                  >
+                    {selectedUniversity?.id === item.id ? "" : "Hiện"}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </Popup>
+        </Marker>
       ))}
 
+      {/* Control buttons */}
       {selectedItem && (
         <button onClick={handleCalculateRoute} className="calculateRouteBtn">
           Tính đường đi
         </button>
       )}
+      
+      <button onClick={toggleUniversityMarkers} className="toggleUniversityBtn">
+        {showUniversityMarkers ? "Ẩn trường đại học" : "Hiện trường đại học"}
+      </button>
 
+      {/* GeoJSON layer */}
       {geojsonData && (
         <GeoJSON data={geojsonData} onEachFeature={onEachFeature} />
+      )}
+
+      {/* Radius control panel */}
+      {displayMode === DisplayMode.UNIVERSITY_RADIUS && (
+        <div className="radiusInfo">
+          <p>Tìm thấy {postsByUniversity.length} kết quả trong bán kính {selectedRadius/1000}km</p>
+        </div>
       )}
     </MapContainer>
   );

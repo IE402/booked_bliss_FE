@@ -2,18 +2,34 @@ import Slider from '../../components/slider/Slider';
 import './singlePage.scss'
 // import { singlePostData, userData } from '../../lib/dummydata'
 import Map from '../../components/map/Map'
-import {  useLoaderData, useNavigate } from 'react-router-dom';
+import {  Await, Link, useLoaderData, useNavigate } from 'react-router-dom';
 import DOMPurify from "dompurify";
-import { useContext, useState } from 'react';
+import { Suspense, useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../../components/context/AuthContext'
 import apiRequest from '../../lib/apiRequest'
+import { postService } from '../../services/post.service';
+import List from '../../components/list/List';
 
 function SinglePage() {
   const post = useLoaderData();
   console.log("single post --------",post);
   const [saved, setSaved] = useState(post.isSaved);
   const { currentUser } = useContext(AuthContext);
+  const [visiblePosts, setVisiblePosts] = useState(3); // Default to 3 posts
+
   const navigate = useNavigate();
+  const [posts, setPosts] = useState([]);
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const res = await postService.getAllPosts();
+        setPosts(res);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchPosts();
+  }, []);
 
   const handleSave = async () => {
     if (!currentUser) {
@@ -55,9 +71,10 @@ function SinglePage() {
           </div>
         </div>
       </div>
+      
       {/* Buttons (send & save) */}
       <div className="buttons">
-        <button>
+        <button onClick={() => navigate("/chat",{ state: { userId: post.id, postId: post.id } } )} >
           <img src="/chat.png" alt="" />
           Nhắn Tin
         </button>
@@ -68,7 +85,7 @@ function SinglePage() {
           }}
         >
           <img src="/save.png" alt="" />
-          {saved ? "Place saved" : "Save a Place"}
+          {saved ? "Đã lưu" : "Lưu"}
         </button>
       </div>
       <div className="features">
@@ -149,6 +166,29 @@ function SinglePage() {
         </div>
 
       </div>
+      
+      <div className="recentHome">
+        <div className="text">
+          <h3>Phòng trọ gần đây</h3>
+          <span>
+            <Link to={`/list`}>Xem tất cả</Link>
+          </span>
+        </div>
+        <div className="homeItem">
+          <Suspense fallback={<p>Loading posts...</p>}>
+          <Await
+            resolve={posts}
+            errorElement={<p>Error loading posts!</p>}
+          >
+            {(posts) => (
+              <List posts={posts.slice(0, visiblePosts)} />
+            )}
+          </Await>
+        </Suspense>
+        </div>
+      </div>
+      {/* Similar Posts */}
+      
     </div>
   )
 }

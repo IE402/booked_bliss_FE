@@ -1,27 +1,42 @@
 .map {
-    width: 90%;
-    height: 90%;
-    border-radius: 20px;
-    align-items: center;
-    display: flex;
-    justify-content: center;
-    margin-left: 20px;
+  width: 90%;
+  height: 90%;
+  border-radius: 20px;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  margin-left: 20px;
 }
 .calculateRouteBtn {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    padding: 10px 20px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
-    cursor: pointer;
-    z-index: 1000; /* Đảm bảo nút nằm trên bản đồ */
-  }
-  
-  .calculateRouteBtn:hover {
-    background-color: #45a049;
-  }
-  
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  padding: 10px 20px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 13px;
+  cursor: pointer;
+  z-index: 1000; /* Đảm bảo nút nằm trên bản đồ */
+}
+.toggleUniversityBtn {
+  position: absolute;
+  top: 20px;
+  right: 150px;
+  padding: 10px 20px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 13px;
+  cursor: pointer;
+  z-index: 1000; /* Đảm bảo nút nằm trên bản đồ */
+}
+
+.calculateRouteBtn:hover {
+  background-color: #125815;
+}
+.toggleUniversityBtn:hover {
+  background-color: #125815;
+}
