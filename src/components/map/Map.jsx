@@ -3,32 +3,33 @@ import "leaflet/dist/leaflet.css";
 import "./map.scss";
 import Pin from "../pin/Pin";
 import { postService } from "../../services/post.service";
-import { useEffect, useState, useCallback, useRef } from "react";
+import {
+  useEffect,
+  useState,
+  useCallback,
+  useRef,
+  useContext,
+  useMemo,
+} from "react";
 import { useParams } from "react-router-dom";
 import L from "leaflet";
 import "leaflet-routing-machine/dist/leaflet-routing-machine.css";
 import "leaflet-routing-machine";
 import { Universitys } from "../../data/university";
-import { redIcon, UniversityIcon, districtColors } from "./Icon";
+import {
+  redIcon,
+  UniversityIcon,
+  districtColors,
+  DisplayMode,
+  RADIUS_OPTIONS,
+} from "./setUp";
 
-const DisplayMode = {
-  ALL_POSTS: "ALL_POSTS",
-  UNIVERSITY_RADIUS: "UNIVERSITY_RADIUS",
-};
-
-// Định nghĩa các giá trị radius có sẵn
-const RADIUS_OPTIONS = [
-  { value: 1000, label: "1km" },
-  { value: 2000, label: "2km" },
-  { value: 3000, label: "3km" },
-  { value: 5000, label: "5km" },
-];
-
-function Map({ itemCurrents }) {
+function Map({ itemCurrents, onMessageShow, selected_University, r, showOne }) {
   // Core states
   const [currentPosition, setCurrentPosition] = useState([
     10.8744082, 106.8015733,
   ]);
+
   const [map, setMap] = useState(null);
   const [selectedItem, setSelectedItem] = useState(itemCurrents[0]);
   const { id } = useParams();
@@ -46,6 +47,12 @@ function Map({ itemCurrents }) {
   // Refs for cleanup
   const routeControlRef = useRef(null);
   const radiusCirclesRef = useRef([]);
+  useEffect(() => {
+    console.log("Load GeoJSON data", selected_University, r);
+    renderHostelsInRadius(selected_University);
+    setSelectedUniversity(selected_University);
+    setSelectedRadius(r);
+  }, [selected_University, r]);
 
   // Load GeoJSON data
   useEffect(() => {
@@ -106,7 +113,7 @@ function Map({ itemCurrents }) {
 
   const handleCalculateRoute = useCallback(() => {
     if (!map) return;
-  
+
     // If calculator is showing, clean up and hide
     if (showCalculator) {
       if (routeControlRef.current) {
@@ -116,16 +123,16 @@ function Map({ itemCurrents }) {
       setShowCalculator(false);
       return;
     }
-  
+
     // Need selected item to calculate route
     if (!selectedItem) return;
-  
+
     // Remove existing route if any
     if (routeControlRef.current) {
       map.removeControl(routeControlRef.current);
       routeControlRef.current = null;
     }
-  
+
     try {
       const route = L.Routing.control({
         waypoints: [
@@ -135,7 +142,7 @@ function Map({ itemCurrents }) {
         routeWhileDragging: true,
         instructions: false,
       }).addTo(map);
-  
+
       routeControlRef.current = route;
       setShowCalculator(true);
     } catch (error) {
@@ -243,13 +250,14 @@ function Map({ itemCurrents }) {
 
       {/* University markers */}
       {showUniversityMarkers &&
+        !showOne &&
         Universitys.map((item) => (
           <Marker
             position={[item.latitude, item.longitude]}
             icon={UniversityIcon}
             key={item.id}
           >
-            <Popup autoClose={false}>
+            <Popup>
               <div className="popupContainer">
                 <div className="textContainer">
                   <h3>{item.name}</h3>
@@ -282,6 +290,48 @@ function Map({ itemCurrents }) {
           </Marker>
         ))}
 
+      {showUniversityMarkers && showOne && (
+        <Marker
+          position={[
+            selected_University.latitude,
+            selected_University.longitude,
+          ]}
+          icon={UniversityIcon}
+          key={selected_University.id}
+        >
+          <Popup>
+            <div className="popupContainer">
+              <div className="textContainer">
+                <h3>{selected_University.name}</h3>
+                <span>{selected_University.fullname}</span>
+                <div className="controls">
+                  {/* Radius selection dropdown */}
+                  <select
+                    value={selectedRadius}
+                    onChange={(e) => setSelectedRadius(Number(e.target.value))}
+                    className="radiusSelect"
+                  >
+                    {RADIUS_OPTIONS.map((option) => (
+                      <option key={option.value} value={option.value}>
+                        {option.label}
+                      </option>
+                    ))}
+                  </select>
+                  <button
+                    onClick={() => renderHostelsInRadius(selected_University)}
+                    className="showPostsBtn"
+                  >
+                    {selectedUniversity?.id === selected_University.id
+                      ? ""
+                      : "Hiện"}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </Popup>
+        </Marker>
+      )}
+
       {/* Control buttons */}
       {
         <button onClick={handleCalculateRoute} className="calculateRouteBtn">
@@ -289,7 +339,13 @@ function Map({ itemCurrents }) {
         </button>
       }
 
-      <button onClick={toggleUniversityMarkers} className="toggleUniversityBtn">
+      <button
+        onClick={() => {
+          toggleUniversityMarkers();
+          onMessageShow(!showUniversityMarkers);
+        }}
+        className="toggleUniversityBtn"
+      >
         {showUniversityMarkers ? "Ẩn trường đại học" : "Hiện trường đại học"}
       </button>
 

@@ -1,0 +1,76 @@
+.filter-sidebar {
+    background-color: #fff;
+    margin: 0 20px 20px 0;
+    width: 250px;
+    border-right: 1px #ccc solid;
+    width: 100%;
+
+    .filter-section {
+        padding: 20px 0px 20px 60px;
+        border-bottom: 1px #ccc solid;
+
+        h3 {
+            display: inline-block;
+            margin-bottom: 10px;
+            font-size: 14px;
+            border-radius: 20px;
+            padding: 6px 10px;
+            background-color: #2a2a68;
+            color: #fff;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 14px;
+            color: #555;
+
+            input {
+                margin-right: 8px;
+            }
+        }
+
+        .slider-container {
+            margin-top: 10px;
+            display: flex;
+            flex-direction: column; 
+
+            .slider-item {
+                display: flex; 
+                align-items: center;
+                gap: 4px;
+                flex: 1; 
+
+                input {
+                    margin-left: 4px;
+                }
+            }
+        }
+    }
+
+    .location,
+    .property {
+        label {
+            padding-left: 4px;
+        }
+    }
+
+    .bedroom {
+        border-bottom: none;
+    }
+
+    .filter-btn {
+        padding: 20px 0px 20px 60px;
+        .filter-update{
+            padding: 12px 20px;
+            border: none;
+            background-color: #2a2a68;
+            color: #fff;
+            cursor: pointer;
+            font-size: 12px;
+            border-radius: 20px;
+            transition: background-color 0.3s ease-in-out;
+            // margin-bottom: 10px;
+        }
+    }
+}

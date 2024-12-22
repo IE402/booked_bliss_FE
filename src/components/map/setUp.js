@@ -28,3 +28,16 @@ export const districtColors = {
   "Binh Chieu": "#FF4500", // Màu orangered cho quận 12
   "Tam Phu": "#FF69B4", // Màu hotpink cho quận Binh Tan
 };
+
+export const DisplayMode = {
+  ALL_POSTS: "ALL_POSTS",
+  UNIVERSITY_RADIUS: "UNIVERSITY_RADIUS",
+};
+
+// Định nghĩa các giá trị radius có sẵn
+export const RADIUS_OPTIONS = [
+  { value: 1000, label: "1km" },
+  { value: 2000, label: "2km" },
+  { value: 3000, label: "3km" },
+  { value: 5000, label: "5km" },
+];
