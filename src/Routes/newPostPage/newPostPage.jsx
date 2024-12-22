@@ -37,6 +37,8 @@ function NewPostPage() {
                         latitude: parseFloat(inputs.latitude),
                         longitude: parseFloat(inputs.longitude),
                         images: images,
+                        roomSpace: parseInt(inputs.roomSpace),
+
                     },
                     {
                         desc: value,
@@ -68,12 +70,12 @@ function NewPostPage() {
     return (
         <div className="newPostPage">
             <div className="formContainer">
-                <h1>Add new post</h1>
+                <h1>Thêm phòng trọ</h1>
                 <div className="wrapper">
                     <form onSubmit={handleSubmit}>
                         {/* above */}
                         <div className="item">
-                            <label htmlFor="title">Title</label>
+                            <label htmlFor="title">Tên Trọ</label>
                             <input id="title" name="title" type="text" />
                         </div>
                         <div className="item">
@@ -156,6 +158,10 @@ function NewPostPage() {
                         <div className="item">
                             <label htmlFor="size">Total Size (sqft)</label>
                             <input min={0} id="size" name="size" type="number" />
+                        </div>
+                        <div className="item">
+                            <label htmlFor="roomSpace">Số phòng trống</label>
+                            <input min={0} id="roomSpace" name="roomSpace" type="number" />
                         </div>
                         <div className="item">
                             <label htmlFor="school">School</label>

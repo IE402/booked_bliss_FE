@@ -17,12 +17,14 @@ function Register() {
         const formData = new FormData(e.target);
 
         const username = formData.get("username");
+        const fullName = formData.get("fullName");
+        const phone = formData.get("phone");
         const email = formData.get("email");
         const password = formData.get("password");
 
         try {
             const res = await apiRequest.post("/auth/register", {
-                username, email, password
+                username, fullName, phone, email, password
             })
 
             navigate("/login");
@@ -40,13 +42,15 @@ function Register() {
     <div className="register">
       <div className="formContainer">
         <form onSubmit={handleSubmit}>
-          <h1>Create an Account</h1>
-          <input name="username" type="text" placeholder="Username" />
+          <h1>Tạo tài khoản</h1>
+          <input name="username" type="text" placeholder="Tài Khoản" />
+          <input name="fullName" type="text" placeholder="Họ Tên" />
+          <input name="phone" type="text" placeholder="Họ Tên" />
           <input name="email" type="text" placeholder="Email" />
-          <input name="password" type="password" placeholder="Password" />
-          <button disabled={isLoading}>Register</button>
+          <input name="password" type="password" placeholder="Mật khẩu" />
+          <button disabled={isLoading}>Đăng ký</button>
           {error && <span>{error}</span>}
-          <Link to="/login">Do you have an account?</Link>
+          <Link to="/login">Bạn đã có tài khoản?</Link>
         </form>
       </div>
       <div className="imgContainer">
