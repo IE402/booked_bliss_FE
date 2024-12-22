@@ -45,7 +45,7 @@ function Register() {
           <h1>Tạo tài khoản</h1>
           <input name="username" type="text" placeholder="Tài Khoản" />
           <input name="fullName" type="text" placeholder="Họ Tên" />
-          <input name="phone" type="text" placeholder="Họ Tên" />
+          <input name="phone" type="text" placeholder="Số điện thoại" />
           <input name="email" type="text" placeholder="Email" />
           <input name="password" type="password" placeholder="Mật khẩu" />
           <button disabled={isLoading}>Đăng ký</button>
