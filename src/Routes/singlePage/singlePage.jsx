@@ -1,21 +1,25 @@
-import Slider from '../../components/slider/Slider';
-import './singlePage.scss'
+import Slider from "../../components/slider/Slider";
+import "./singlePage.scss";
 // import { singlePostData, userData } from '../../lib/dummydata'
-import Map from '../../components/map/Map'
-import {  Await, Link, useLoaderData, useNavigate } from 'react-router-dom';
+import Map from "../../components/map/Map";
+import { Await, Link, useLoaderData, useNavigate } from "react-router-dom";
 import DOMPurify from "dompurify";
-import { Suspense, useContext, useEffect, useState } from 'react';
-import { AuthContext } from '../../components/context/AuthContext'
-import apiRequest from '../../lib/apiRequest'
-import { postService } from '../../services/post.service';
-import List from '../../components/list/List';
+import { Suspense, useContext, useEffect, useState } from "react";
+import { AuthContext } from "../../components/context/AuthContext";
+import apiRequest from "../../lib/apiRequest";
+import { postService } from "../../services/post.service";
+import List from "../../components/list/List";
+import { reviewService } from "../../services/reviews.service";
 
 function SinglePage() {
   const post = useLoaderData();
-  console.log("single post --------",post);
   const [saved, setSaved] = useState(post.isSaved);
   const { currentUser } = useContext(AuthContext);
-  const [visiblePosts, setVisiblePosts] = useState(3); // Default to 3 posts
+  const [visiblePosts, setVisiblePosts] = useState(3);
+  const [reviews, setReviews] = useState([]);
+  const [newComment, setNewComment] = useState("");
+  const [rating, setRating] = useState(5);
+  const [countComments, setCountComments] = useState(3)
 
   const navigate = useNavigate();
   const [posts, setPosts] = useState([]);
@@ -30,6 +34,18 @@ function SinglePage() {
     };
     fetchPosts();
   }, []);
+  const fetchReviews = async () => {
+    try {
+      const res = await reviewService.getAllReviewByPost(post.id);
+      setReviews(res.slice(0, countComments));
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  useEffect(() => {
+    
+    fetchReviews();
+  }, [post.id], reviews.length);
 
   const handleSave = async () => {
     if (!currentUser) {
@@ -44,8 +60,53 @@ function SinglePage() {
       setSaved((prev) => !prev);
     }
   };
+  const handleSubmitReview = async (e) => {
+    e.preventDefault();
+    if (!currentUser) {
+      navigate("/login");
+      return;
+    }
+
+    try {
+      const reviewData = {
+        review: {
+          comment: newComment,
+          star: rating,
+        },
+        postId: post.id,
+        userId: currentUser.id,
+      };
+
+      const res = await reviewService.addReview(reviewData);
+      setReviews((prev) => [...prev, res]);
+      fetchReviews();
+      setNewComment("");
+      setRating(5);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const calculateAverageRating = (reviews) => {
+    if (reviews.length === 0) return 0;
+    const sum = reviews.reduce((acc, review) => acc + review.star, 0);
+    return (sum / reviews.length).toFixed(1);
+  };
+
+  const calculateStarPercentages = (reviews) => {
+    const total = reviews.length;
+    const counts = { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 };
+
+    reviews.forEach((review) => {
+      counts[review.star] = (counts[review.star] || 0) + 1;
+    });
+
+    return Object.keys(counts).reduce((acc, star) => {
+      acc[star] = total > 0 ? (counts[star] / total) * 100 : 0;
+      return acc;
+    }, {});
+  };
   return (
-    <div className='singlePage'>
+    <div className="singlePage">
       <div className="details">
         <div className="wrapper">
           <Slider images={post.images} />
@@ -64,17 +125,23 @@ function SinglePage() {
                 <span>{post.user.username}</span>
               </div>
             </div>
-            <div className="bottom" dangerouslySetInnerHTML={{
-              __html: DOMPurify.sanitize(post.postDetail.desc),
-            }}>
-            </div>
+            <div
+              className="bottom"
+              dangerouslySetInnerHTML={{
+                __html: DOMPurify.sanitize(post.postDetail.desc),
+              }}
+            ></div>
           </div>
         </div>
       </div>
-      
+
       {/* Buttons (send & save) */}
       <div className="buttons">
-        <button onClick={() => navigate("/chat",{ state: { userId: post.id, postId: post.id } } )} >
+        <button
+          onClick={() =>
+            navigate("/chat", { state: { userId: post.id, postId: post.id } })
+          }
+        >
           <img src="/chat.png" alt="" />
           Nhắn Tin
         </button>
@@ -95,22 +162,20 @@ function SinglePage() {
           <div className="feature">
             <img src="/utility.png" alt="" />
             {/* <span>Renter is responsible</span> */}
-            {
-              post.postDetail.utilities === "owner" ? (
-                <p>Chủ trọ chịu trách nhiệm</p>
-              ) : (
-                <p>Người thuê chịu trách nhiệm</p>
-              )}
+            {post.postDetail.utilities === "owner" ? (
+              <p>Chủ trọ chịu trách nhiệm</p>
+            ) : (
+              <p>Người thuê chịu trách nhiệm</p>
+            )}
           </div>
           <div className="feature">
             <img src="/pet.png" alt="" />
             {/* <span>Pet Allowed</span> */}
-            {
-              post.postDetail.pet === "allowed" ? (
-                <p>Được nuôi thú cưng</p>
-              ) : (
-                <p>Không được nuôi thú cưng</p>
-              )}
+            {post.postDetail.pet === "allowed" ? (
+              <p>Được nuôi thú cưng</p>
+            ) : (
+              <p>Không được nuôi thú cưng</p>
+            )}
           </div>
           <div className="feature">
             <img src="/fee.png" alt="" />
@@ -142,7 +207,12 @@ function SinglePage() {
           <div className="place">
             <img src="/school.png" alt="" />
             <span>Trường học</span>
-            <p>khoảng {post.postDetail.school > 999 ? post.postDetail.school / 1000 + "km" : post.postDetail.school + "m"} </p>
+            <p>
+              khoảng{" "}
+              {post.postDetail.school > 999
+                ? post.postDetail.school / 1000 + "km"
+                : post.postDetail.school + "m"}{" "}
+            </p>
           </div>
 
           <div className="place">
@@ -159,14 +229,114 @@ function SinglePage() {
         </div>
       </div>
       {/* Location */}
+
+      <h2>Đánh giá và bình luận</h2>
+      <div className="reviews">
+        {/* Rating Statistics */}
+        <div className="ratingStats">
+          <div className="averageRating">
+            <h3>{calculateAverageRating(reviews)}</h3>
+            <div className="stars">
+              {[1, 2, 3, 4, 5].map((star) => (
+                <span
+                  key={star}
+                  className={`star ${
+                    calculateAverageRating(reviews) >= star ? "active" : ""
+                  }`}
+                >
+                  ★
+                </span>
+              ))}
+            </div>
+            <p>{reviews.length} đánh giá</p>
+          </div>
+
+          <div className="ratingBars">
+            {[5, 4, 3, 2, 1].map((star) => {
+              const percentage = calculateStarPercentages(reviews)[star];
+              return (
+                <div key={star} className="ratingBar">
+                  <span className="starLabel">{star} ★</span>
+                  <div className="barContainer">
+                    <div
+                      className="bar"
+                      style={{ width: `${percentage}%` }}
+                    ></div>
+                  </div>
+                  <span className="percentage">{percentage.toFixed(1)}%</span>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+        {/* Comment Form */}
+        <div className="cmt">
+          <div className="commentForm">
+            <div className="ratingSelect">
+              <span>Đánh giá: </span>
+              {[1, 2, 3, 4, 5].map((star) => (
+                <button
+                  key={star}
+                  className={`starButton ${rating >= star ? "active" : ""}`}
+                  onClick={() => setRating(star)}
+                >
+                  ★
+                </button>
+              ))}
+            </div>
+            <form onSubmit={handleSubmitReview}>
+              <textarea
+                value={newComment}
+                onChange={(e) => setNewComment(e.target.value)}
+                placeholder="Viết đánh giá của bạn..."
+                required
+              />
+              <button type="submit">Gửi đánh giá</button>
+            </form>
+          </div>
+
+          {/* Comments List */}
+          <div className="commentsList">
+            <h2>Danh sách đánh giá</h2>
+            {reviews.length > 0 ? (
+              reviews.map((review) => (review && review.user && review.user.avatar &&
+                <div key={review.id} className="commentItem">
+                  <div className="commentHeader">
+                    <div className="userInfo">
+                      <img
+                        src={review.user.avatar || "https://th.bing.com/th/id/OIP.ItvA9eX1ZIYT8NHePqeuCgHaHa?rs=1&pid=ImgDetMain"}
+                        alt=""
+                      />
+                      <span className="username">{review.user.username}</span>
+                    </div>
+                    <div className="rating">
+                      {[...Array(review.star)].map((_, index) => (
+                        <span key={index} className="star">
+                          ★
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                  <p className="commentText">{review.comment}</p>
+                  <span className="commentDate">
+                    {/* {new Date(review.createdAt).toLocaleDateString()} */}
+                  </span>
+                </div>
+              ))
+            ) : (
+              <p>Chưa có đánh giá nào</p>
+            )}
+          </div>
+        </div>
+      </div>
+
       <div className="location">
         <p className="title">Location</p>
         <div className="mapContainer">
           <Map itemCurrents={[post]} />
         </div>
-
       </div>
-      
+
       <div className="recentHome">
         <div className="text">
           <h3>Phòng trọ gần đây</h3>
@@ -176,21 +346,15 @@ function SinglePage() {
         </div>
         <div className="homeItem">
           <Suspense fallback={<p>Loading posts...</p>}>
-          <Await
-            resolve={posts}
-            errorElement={<p>Error loading posts!</p>}
-          >
-            {(posts) => (
-              <List posts={posts.slice(0, visiblePosts)} />
-            )}
-          </Await>
-        </Suspense>
+            <Await resolve={posts} errorElement={<p>Error loading posts!</p>}>
+              {(posts) => <List posts={posts.slice(0, visiblePosts)} />}
+            </Await>
+          </Suspense>
         </div>
       </div>
       {/* Similar Posts */}
-      
     </div>
-  )
+  );
 }
 
-export default SinglePage
+export default SinglePage;
