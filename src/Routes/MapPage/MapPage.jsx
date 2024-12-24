@@ -9,7 +9,7 @@ function MapPage() {
   const { postResponse } = useLoaderData();
   const [showUniversitys, setShowUniversitys] = React.useState(false);
   const [selectedUniversity, setSelectedUniversity] = React.useState(null);
-  const [r,setR] = React.useState(1000);
+  const [r, setR] = React.useState(1000);
   const [showOneUniversity, setShowOneUniversity] = React.useState(false);
   const showUniversitysHandler = (data) => {
     setShowUniversitys(data);
@@ -57,6 +57,21 @@ function MapPage() {
           </Suspense>
         </div>
       </div>
+      <hr />
+      {/* <div className="listContainer">
+        <Suspense fallback={<p>Loading posts...</p>}>
+          <Await
+            resolve={postResponse}
+            errorElement={<p>Error loading posts!</p>}
+          >
+            {(postResponse) =>
+              postResponse.map((post) => (
+                <Card key={post.id} item={post} />
+              ))
+            }
+          </Await>
+        </Suspense>
+      </div> */}
     </div>
   );
 }

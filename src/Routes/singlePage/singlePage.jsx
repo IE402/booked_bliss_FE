@@ -10,7 +10,7 @@ import apiRequest from "../../lib/apiRequest";
 import { postService } from "../../services/post.service";
 import List from "../../components/list/List";
 import { reviewService } from "../../services/reviews.service";
-
+import { formatPrice } from "../../services/func";
 function SinglePage() {
   const post = useLoaderData();
   const [saved, setSaved] = useState(post.isSaved);
@@ -118,7 +118,11 @@ function SinglePage() {
                   <img src="/pin.png" alt="" />
                   <span>{post.address}</span>
                 </div>
-                <div className="price"> {post.price} VND</div>
+                <div className="address">
+                  <img src="/ic_phone.png" alt="" />
+                  <span>{post.user.phone}</span>
+                </div>
+                <div className="price"> {formatPrice(post.price)} VND</div>
               </div>
               <div className="user">
                 <img src={post.user.avatar} alt="" />

@@ -2,9 +2,13 @@ import { Link } from 'react-router-dom';
 import './card.scss'
 
 function Card({item}){
+    const scrollToTop = () => {
+        window.scrollTo(0, 0);  // Cuộn trang lên đầu
+      };
+    
   return (
     <div className='card'>
-        <Link to={`/${item.id}`} className="imageContainer">
+        <Link to={`/${item.id}`} className="imageContainer" onClick={scrollToTop}>
             <img src={item.images[0]} alt="" />
         </Link>
         <div className="textContainer">
