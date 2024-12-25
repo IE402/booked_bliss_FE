@@ -23,18 +23,17 @@ import {
   DisplayMode,
   RADIUS_OPTIONS,
   currentLocationIcon,
+  busStopIcon,
 } from "./setUp";
-
-function Map({ itemCurrents, onMessageShow, selected_University, r, showOne }) {
+import { busStops } from "../../data/busStop";
+function Map({ itemCurrents, onMessageShow, selected_University, r, showOne, showBusStopMarkers,showUniversitys }) {
   // Core states
   const [currentPosition, setCurrentPosition] = useState([
     10.8744082, 106.8015733,
   ]);
-
   const [map, setMap] = useState(null);
   const [selectedItem, setSelectedItem] = useState(itemCurrents[0]);
   const { id } = useParams();
-
   // Feature states
   const [displayMode, setDisplayMode] = useState(DisplayMode.ALL_POSTS);
   const [showUniversityMarkers, setShowUniversityMarkers] = useState(false);
@@ -97,6 +96,9 @@ function Map({ itemCurrents, onMessageShow, selected_University, r, showOne }) {
     },
     [quanHuyenDaChon]
   );
+  useEffect(() => {
+    toggleUniversityMarkers();
+  }, [showUniversitys]);
   useEffect(() => {
     console.log("Load GeoJSON data", selected_University, r);
     renderHostelsInRadius(selected_University);
@@ -368,6 +370,28 @@ function Map({ itemCurrents, onMessageShow, selected_University, r, showOne }) {
           </Popup>
         </Marker>
       )}
+      { showBusStopMarkers &&
+        busStops.map((busStop) => (
+          <Marker
+          position={[
+            busStop.latitude,
+            busStop.longitude,
+          ]}
+          icon={busStopIcon}
+          key={busStop.id}
+        >
+          <Popup>
+            <div className="popupContainer">
+              <div className="textContainer">
+                <h3>{busStop.name}</h3>
+                <div className="controls">
+                </div>
+              </div>
+            </div>
+          </Popup>
+        </Marker>
+        ))
+      }
 
       {/* Control buttons */}
       {
@@ -376,15 +400,7 @@ function Map({ itemCurrents, onMessageShow, selected_University, r, showOne }) {
         </button>
       }
 
-      <button
-        onClick={() => {
-          toggleUniversityMarkers();
-          onMessageShow(!showUniversityMarkers);
-        }}
-        className="toggleUniversityBtn"
-      >
-        {showUniversityMarkers ? "Ẩn trường đại học" : "Hiện trường đại học"}
-      </button>
+      
 
       {/* GeoJSON layer */}
       {geojsonData && (
@@ -400,6 +416,7 @@ function Map({ itemCurrents, onMessageShow, selected_University, r, showOne }) {
           </p>
         </div>
       )}
+    
     </MapContainer>
   );
 }

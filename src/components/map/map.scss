@@ -20,19 +20,7 @@
   cursor: pointer;
   z-index: 1000; /* Đảm bảo nút nằm trên bản đồ */
 }
-.toggleUniversityBtn {
-  position: absolute;
-  top: 20px;
-  right: 150px;
-  padding: 10px 20px;
-  background-color: #4caf50;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  font-size: 13px;
-  cursor: pointer;
-  z-index: 1000; /* Đảm bảo nút nằm trên bản đồ */
-}
+
 
 .calculateRouteBtn:hover {
   background-color: #125815;
