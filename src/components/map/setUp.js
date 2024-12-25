@@ -5,6 +5,13 @@ export const redIcon = new L.Icon({
   popupAnchor: [1, -34], // Vị trí của popup
   shadowSize: [41, 41],
 });
+export const currentLocationIcon = new L.Icon({
+  iconUrl: "https://icon-library.com/images/current-location-icon-png/current-location-icon-png-12.jpg", // Sử dụng icon mặc định của Leaflet
+  iconSize: [32, 41], // Kích thước của icon
+  iconAnchor: [12, 41], // Mốc neo của icon
+  popupAnchor: [1, -34], // Vị trí của popup
+  shadowSize: [0, 0],
+});
 export const UniversityIcon = new L.Icon({
   iconUrl:
     "https://cdn3.iconfinder.com/data/icons/placeholder-3/64/education-college-school-placeholder-pin-pointer-gps-map-location-1024.png",
