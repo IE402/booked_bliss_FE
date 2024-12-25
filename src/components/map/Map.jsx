@@ -11,7 +11,7 @@ import {
   useContext,
   useMemo,
 } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import L from "leaflet";
 import "leaflet-routing-machine/dist/leaflet-routing-machine.css";
 import "leaflet-routing-machine";
@@ -22,6 +22,7 @@ import {
   districtColors,
   DisplayMode,
   RADIUS_OPTIONS,
+  currentLocationIcon,
 } from "./setUp";
 
 function Map({ itemCurrents, onMessageShow, selected_University, r, showOne }) {
@@ -43,10 +44,59 @@ function Map({ itemCurrents, onMessageShow, selected_University, r, showOne }) {
   const [selectedRadius, setSelectedRadius] = useState(RADIUS_OPTIONS[0].value);
   const [selectedUniversity, setSelectedUniversity] = useState(null);
   const [showCalculator, setShowCalculator] = useState(false);
+  
 
   // Refs for cleanup
   const routeControlRef = useRef(null);
   const radiusCirclesRef = useRef([]);
+  const [quanHuyenDaChon, setQuanHuyenDaChon] = useState(null);
+
+  const onEachFeature = useCallback(
+    (feature, layer) => {
+      layer.on({
+        click: () => {
+          const tenQuanHuyen = feature.name;
+          setQuanHuyenDaChon(tenQuanHuyen);
+
+          layer.setStyle({
+            weight: 5,
+            color: "red",
+            fillOpacity: 0.7,
+          });
+
+          layer.bindPopup(`Quận/Huyện: ${tenQuanHuyen}`).openPopup();
+        },
+        mouseover: (e) => {
+          const layer = e.target;
+          layer.setStyle({
+            weight: 3,
+            color: "#666",
+            fillOpacity: 0.5,
+          });
+        },
+        mouseout: (e) => {
+          const layer = e.target;
+          if (layer.feature.name !== quanHuyenDaChon) {
+            layer.setStyle({
+              weight: 1,
+              color: "gray",
+              fillOpacity: 0.3,
+            });
+          }
+        },
+      });
+
+      const tenQuanHuyen = feature.name;
+      const mauNen = districtColors[tenQuanHuyen] || "#D3D3D3";
+      layer.setStyle({
+        weight: quanHuyenDaChon === tenQuanHuyen ? 5 : 1,
+        color: quanHuyenDaChon === tenQuanHuyen ? "red" : "gray",
+        fillOpacity: quanHuyenDaChon === tenQuanHuyen ? 0.7 : 0.3,
+        fillColor: mauNen,
+      });
+    },
+    [quanHuyenDaChon]
+  );
   useEffect(() => {
     console.log("Load GeoJSON data", selected_University, r);
     renderHostelsInRadius(selected_University);
@@ -88,28 +138,6 @@ function Map({ itemCurrents, onMessageShow, selected_University, r, showOne }) {
       renderHostelsInRadius(selectedUniversity);
     }
   }, [selectedRadius]);
-
-  const onEachFeature = useCallback(
-    (feature, layer) => {
-      layer.on({
-        click: () => {
-          setHighlightedDistrict(feature.name);
-          history.push(`/Map?type=&city=${encodeURIComponent(feature.name)}`);
-        },
-      });
-
-      const districtName = feature.name;
-      const fillColor = districtColors[districtName] || "#D3D3D3";
-
-      layer.setStyle({
-        weight: highlightedDistrict === districtName ? 5 : 1,
-        color: highlightedDistrict === districtName ? "red" : "gray",
-        fillOpacity: highlightedDistrict === districtName ? 0.7 : 0.3,
-        fillColor,
-      });
-    },
-    [highlightedDistrict]
-  );
 
   const handleCalculateRoute = useCallback(() => {
     if (!map) return;
@@ -207,7 +235,7 @@ function Map({ itemCurrents, onMessageShow, selected_University, r, showOne }) {
     <MapContainer
       center={[10.8700089, 106.8004792]}
       zoom={13}
-      scrollWheelZoom={false}
+      scrollWheelZoom={true}
       className="map"
       whenReady={({ target }) => setMap(target)}
     >
@@ -217,7 +245,7 @@ function Map({ itemCurrents, onMessageShow, selected_University, r, showOne }) {
       />
 
       {/* Current position marker */}
-      <Marker position={currentPosition} icon={redIcon}>
+      <Marker position={currentPosition} icon={currentLocationIcon}>
         <Popup autoClose={false}>
           <div className="popupContainer">
             <div className="textContainer">
@@ -249,6 +277,15 @@ function Map({ itemCurrents, onMessageShow, selected_University, r, showOne }) {
         ))}
 
       {/* University markers */}
+      {geojsonData && (
+        <GeoJSON data={geojsonData} onEachFeature={onEachFeature} />
+      )}
+
+      {quanHuyenDaChon && (
+        <div className="thong-tin-quan-huyen">
+          <p>Quận/Huyện đã chọn: {quanHuyenDaChon}</p>
+        </div>
+      )}
       {showUniversityMarkers &&
         !showOne &&
         Universitys.map((item) => (

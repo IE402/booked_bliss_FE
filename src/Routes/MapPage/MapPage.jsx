@@ -58,20 +58,6 @@ function MapPage() {
         </div>
       </div>
       <hr />
-      {/* <div className="listContainer">
-        <Suspense fallback={<p>Loading posts...</p>}>
-          <Await
-            resolve={postResponse}
-            errorElement={<p>Error loading posts!</p>}
-          >
-            {(postResponse) =>
-              postResponse.map((post) => (
-                <Card key={post.id} item={post} />
-              ))
-            }
-          </Await>
-        </Suspense>
-      </div> */}
     </div>
   );
 }
