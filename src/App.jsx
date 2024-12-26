@@ -7,7 +7,7 @@ import {
   // Link,
 } from "react-router-dom";
 import { Layout, RequireAuth } from "./routes/layout/layout";
-import SinglePage from "./routes/singlePage/SinglePage";
+import SinglePage from "./Routes/singlePage/singlePage";
 import Profile from "./routes/UserProfile/userProfile";
 import HomePage from "./Routes/homePage/homePage";
 import NewPostPage from "./Routes/newPostPage/newPostPage";
@@ -15,7 +15,6 @@ import Register from "./routes/register/register";
 import Login from "./routes/login/login";
 import ProfileUpdatePage from "./routes/profileUpdatePage/profileUpdatePage"
 import { listPageLoader, singPageLoader, profilePageLoader, homePageLoader, chatPageLoader } from "./lib/loaders";
-import ContactUs from "./Routes/LeftoverPage/ContactUs";
 import TypeofHouses from "./Routes/LeftoverPage/TypeOfHouses";
 import FAQPage from "./Routes/FAQPage/FAQPAge";
 import Cooperation from "./Routes/LeftoverPage/Cooperation";
@@ -23,7 +22,8 @@ import Agents from "./Routes/LeftoverPage/Agents";
 import { AuthContext } from "./components/context/AuthContext";
 import { useContext } from "react";
 import MapPage from "./Routes/MapPage/MapPage";
-import ChatPage from "./Routes/Chat/Chat";
+import { HopDong } from "./Routes/Rent/HopDong";
+import ListUserThue from "./Routes/LeftoverPage/HopDong";
 function App() {
   const {currentUser  } = useContext(AuthContext);
   console.log(currentUser);
@@ -62,10 +62,10 @@ function App() {
           element: <ListPage />,
           loader: listPageLoader,
         },
-        {
-          path: "/contactus",
-          element: <ContactUs />,
-        },
+        // {
+        //   path: "/contactus",
+        //   element: <ContactUs />,
+        // },
         {
           path: "/houses",
           element: <TypeofHouses />,
@@ -105,6 +105,14 @@ function App() {
         {
           path: "/add",
           element: <NewPostPage />,
+        },
+        {
+          path: "/rent",
+          element: <HopDong />,
+        },
+        {
+          path: "/contactus",
+          element: <ListUserThue />,
         },
         // {
         //   path: "/chat",
