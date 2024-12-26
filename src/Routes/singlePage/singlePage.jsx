@@ -19,7 +19,8 @@ function SinglePage() {
   const [reviews, setReviews] = useState([]);
   const [newComment, setNewComment] = useState("");
   const [rating, setRating] = useState(5);
-  const [countComments, setCountComments] = useState(3)
+  const [countComments, setCountComments] = useState(3);
+  const [confirmThue, setConfirmThue] = useState(false);
 
   const navigate = useNavigate();
   const [posts, setPosts] = useState([]);
@@ -42,10 +43,13 @@ function SinglePage() {
       console.log(err);
     }
   };
-  useEffect(() => {
-    
-    fetchReviews();
-  }, [post.id], reviews.length);
+  useEffect(
+    () => {
+      fetchReviews();
+    },
+    [post.id],
+    reviews.length
+  );
 
   const handleSave = async () => {
     if (!currentUser) {
@@ -105,6 +109,19 @@ function SinglePage() {
       return acc;
     }, {});
   };
+  const toRent = () => {
+    if (!confirmThue) {
+      const confirm = window.confirm("bạn chắc chắn muốn yêu cầu thuê thuê?");
+      if (confirm) {
+        setConfirmThue(true);
+      }
+    } else {
+      const confirm = window.confirm("bạn muốn hủy yêu cầu thuê?");
+      if (confirm) {
+        setConfirmThue(false);
+      }
+    }
+  };
   return (
     <div className="singlePage">
       <div className="details">
@@ -157,6 +174,15 @@ function SinglePage() {
         >
           <img src="/save.png" alt="" />
           {saved ? "Đã lưu" : "Lưu"}
+        </button>
+        <button
+          onClick={toRent}  
+          style={{
+            backgroundColor: confirmThue ? "#fece51" : "white",
+          }}
+        >
+          <img src="/save.png" alt="" />
+          {confirmThue ? "Yêu cầu thuê" : "Hủy Yêu cầu"}
         </button>
       </div>
       <div className="features">
@@ -303,30 +329,40 @@ function SinglePage() {
           <div className="commentsList">
             <h2>Danh sách đánh giá</h2>
             {reviews.length > 0 ? (
-              reviews.map((review) => (review && review.user && review.user.avatar &&
-                <div key={review.id} className="commentItem">
-                  <div className="commentHeader">
-                    <div className="userInfo">
-                      <img
-                        src={review.user.avatar || "https://th.bing.com/th/id/OIP.ItvA9eX1ZIYT8NHePqeuCgHaHa?rs=1&pid=ImgDetMain"}
-                        alt=""
-                      />
-                      <span className="username">{review.user.username}</span>
+              reviews.map(
+                (review) =>
+                  review &&
+                  review.user &&
+                  review.user.avatar && (
+                    <div key={review.id} className="commentItem">
+                      <div className="commentHeader">
+                        <div className="userInfo">
+                          <img
+                            src={
+                              review.user.avatar ||
+                              "https://th.bing.com/th/id/OIP.ItvA9eX1ZIYT8NHePqeuCgHaHa?rs=1&pid=ImgDetMain"
+                            }
+                            alt=""
+                          />
+                          <span className="username">
+                            {review.user.username}
+                          </span>
+                        </div>
+                        <div className="rating">
+                          {[...Array(review.star)].map((_, index) => (
+                            <span key={index} className="star">
+                              ★
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                      <p className="commentText">{review.comment}</p>
+                      <span className="commentDate">
+                        {/* {new Date(review.createdAt).toLocaleDateString()} */}
+                      </span>
                     </div>
-                    <div className="rating">
-                      {[...Array(review.star)].map((_, index) => (
-                        <span key={index} className="star">
-                          ★
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                  <p className="commentText">{review.comment}</p>
-                  <span className="commentDate">
-                    {/* {new Date(review.createdAt).toLocaleDateString()} */}
-                  </span>
-                </div>
-              ))
+                  )
+              )
             ) : (
               <p>Chưa có đánh giá nào</p>
             )}
