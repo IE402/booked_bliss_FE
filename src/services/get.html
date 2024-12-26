@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Google Maps - Bus Stops</title>
+    <script
+      src="https://cdn.jsdelivr.net/gh/somanchiu/Keyless-Google-Maps-API@v6.8/mapsJavaScriptAPI.js"
+      async
+      defer
+    ></script>
+    <style>
+      #map {
+        height: 500px;
+        width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Tìm trạm xe buýt gần đây</h1>
+    <div id="map"></div>
+    <script>
+      let map;
+      let service;
+
+      function initMap() {
+        // Tọa độ trung tâm (TP. Hồ Chí Minh)
+        const center = { lat: 10.776888, lng: 106.700806 };
+
+        // Khởi tạo bản đồ
+        map = new google.maps.Map(document.getElementById("map"), {
+          center: center,
+          zoom: 14,
+        });
+
+        // Cấu hình tìm kiếm trạm xe buýt
+        const request = {
+          location: center,
+          radius: 1000, // Bán kính tìm kiếm (1000m)
+          type: "bus_station", // Loại địa điểm là trạm xe buýt
+        };
+
+        // Sử dụng PlacesService để tìm kiếm
+        service = new google.maps.places.PlacesService(map);
+        service.nearbySearch(request, handleResults);
+      }
+
+      function handleResults(results, status) {
+        if (status === google.maps.places.PlacesServiceStatus.OK) {
+          results.forEach((place) => {
+            // Hiển thị thông tin từng trạm xe buýt
+            console.log("Tên:", place.name);
+            console.log(
+              "Vị trí:",
+              place.geometry.location.lat(),
+              place.geometry.location.lng()
+            );
+
+            // Thêm marker trên bản đồ
+            new google.maps.Marker({
+              position: place.geometry.location,
+              map: map,
+              title: place.name,
+            });
+          });
+        } else {
+          console.error("Lỗi khi tìm kiếm:", status);
+        }
+      }
+
+      // Gọi hàm initMap sau khi API được tải
+      window.initMap = initMap;
+    </script>
+  </body>
+</html>

@@ -20,6 +20,13 @@ export const UniversityIcon = new L.Icon({
   popupAnchor: [1, -34],
   shadowSize: [41, 41],
 });
+export const busStopIcon = new L.Icon({
+  iconUrl: "https://cdn3.iconfinder.com/data/icons/transport-29/100/14-512.png",
+  iconSize: [32, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  shadowSize: [41, 41],
+});
 export const districtColors = {
   "Di An": "#FF6347", // Màu đỏ cho quận 1
   "Linh Xuan": "#1E90FF", // Màu xanh dương cho quận 2

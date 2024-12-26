@@ -1,5 +1,5 @@
 // eslint-disable-next-line no-unused-vars
-import React, { Suspense, useEffect } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import { Await, useLoaderData } from "react-router-dom";
 import Filter from "../../components/filterMap/filter";
 import Map from "../../components/map/Map";
@@ -11,6 +11,7 @@ function MapPage() {
   const [selectedUniversity, setSelectedUniversity] = React.useState(null);
   const [r, setR] = React.useState(1000);
   const [showOneUniversity, setShowOneUniversity] = React.useState(false);
+  const [showBusStopMarkers, setShowBusStopMarkers] = useState(true);
   const showUniversitysHandler = (data) => {
     setShowUniversitys(data);
     console.log(data);
@@ -39,6 +40,24 @@ function MapPage() {
         </div>
 
         <div className="mapContainer">
+          <div className="toggleBtns">
+          <button
+            onClick={() => {
+              setShowBusStopMarkers(!showBusStopMarkers);
+            }}
+            className="toggleBuStopBtn"
+          >
+            {showBusStopMarkers ? "Ẩn trạm xe bus" : "Hiện trạm xe bus"}
+          </button>
+          <button
+            onClick={() => {
+              setShowUniversitys(!showUniversitys);
+            }}
+            className="toggleUniversityBtn"
+          >
+            {showUniversitys ? "Ẩn trường đại học" : "Hiện trường đại học"}
+          </button>
+          </div>
           <Suspense fallback={<p>Loading map...</p>}>
             <Await
               resolve={postResponse}
@@ -51,6 +70,8 @@ function MapPage() {
                   selected_University={selectedUniversity}
                   r={r}
                   showOne={showOneUniversity}
+                  showBusStopMarkers={showBusStopMarkers}
+                  showUniversitys={showUniversitys}
                 />
               )}
             </Await>
