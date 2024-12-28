@@ -52,7 +52,7 @@ function SearchBar() {
             name="minPrice"
             min={0}
             max={10000000}
-            placeholder="Min Price"
+            placeholder="Giá Thấp Nhất"
             onChange={handleChange}
           />
         </div>
@@ -63,7 +63,7 @@ function SearchBar() {
             name="maxPrice"
             min={0}
             max={10000000}
-            placeholder="Max Price"
+            placeholder="Giá cao nhất"
             onChange={handleChange}
           />
         </div>

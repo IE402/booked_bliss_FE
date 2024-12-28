@@ -237,7 +237,7 @@ function Map({ itemCurrents, onMessageShow, selected_University, r, showOne, sho
     <MapContainer
       center={[10.8700089, 106.8004792]}
       zoom={13}
-      scrollWheelZoom={true}
+      scrollWheelZoom={false}
       className="map"
       whenReady={({ target }) => setMap(target)}
     >

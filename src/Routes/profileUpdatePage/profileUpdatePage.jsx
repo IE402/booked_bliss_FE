@@ -71,7 +71,7 @@ function ProfileUpdatePage() {
                 </form>
             </div>
             <div className="sideContainer">
-                <img src={avatar[0] || currentUser.avatar || "/noavatar.jpg"} alt="" className="update-avatar" />
+                <img src={avatar[0] || currentUser.avatar || "https://i.pinimg.com/474x/f8/53/1f/f8531fe6a2e3bc0a42424bdac63d62c0.jpg"} alt="" className="update-avatar" />
                 <UploadWidget uwConfig={{
                     apiKey: "871951181472748",
                     cloudName: "djqh6tbyl",

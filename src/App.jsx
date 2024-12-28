@@ -111,7 +111,7 @@ function App() {
           element: <HopDong />,
         },
         {
-          path: "/contactus",
+          path: "/reqRent",
           element: <ListUserThue />,
         },
         // {
@@ -119,6 +119,18 @@ function App() {
         //   element: <ChatPage />,
         //   loader: chatPageLoader,
         // },
+      ],
+    },
+    {
+      path: "/",
+      element: <RequireAuth />,
+      children: [
+        
+        {
+          path: "/rent",
+          element: <HopDong />,
+        },
+        
       ],
     },
   ]);

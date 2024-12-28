@@ -182,7 +182,7 @@ function SinglePage() {
           }}
         >
           <img src="/save.png" alt="" />
-          {confirmThue ? "Yêu cầu thuê" : "Hủy Yêu cầu"}
+          {!confirmThue ? "Yêu cầu thuê" : "Hủy Yêu cầu"}
         </button>
       </div>
       <div className="features">

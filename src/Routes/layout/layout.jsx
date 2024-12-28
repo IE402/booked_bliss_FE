@@ -35,6 +35,8 @@ function RequireAuth() {
     const location = useLocation();  // Get the current location
 
     const isChatPage = location.pathname === "/chat";
+    const isHopDongPage = location.pathname === "/rent";
+
 
     return !currentUser ? (
         <Navigate to="/login" />
@@ -47,11 +49,33 @@ function RequireAuth() {
                 <Outlet />
             </div>
             {/* Chỉ render Footer nếu không phải là trang "/chat" */}
-            {!isChatPage && (
+            {!isChatPage || !isHopDongPage && (
                 <div className="footer">
                     <Footer />
                 </div>
             )}
+        </div>
+    );
+}
+
+function HopDong() {
+    const { currentUser } = useContext(AuthContext);
+    const location = useLocation();  // Get the current location
+
+    const isChatPage = location.pathname === "/chat";
+
+    return !currentUser ? (
+        <Navigate to="/login" />
+    ) : (
+        <div className='layout'>
+            <div className="navbar">
+                <Navbar />
+            </div>
+            <div className="content">
+                <Outlet />
+            </div>
+            {/* Chỉ render Footer nếu không phải là trang "/chat" */}
+            
         </div>
     );
 }

@@ -11,7 +11,7 @@ function MapPage() {
   const [selectedUniversity, setSelectedUniversity] = React.useState(null);
   const [r, setR] = React.useState(1000);
   const [showOneUniversity, setShowOneUniversity] = React.useState(false);
-  const [showBusStopMarkers, setShowBusStopMarkers] = useState(true);
+  const [showBusStopMarkers, setShowBusStopMarkers] = useState(false);
   const showUniversitysHandler = (data) => {
     setShowUniversitys(data);
     console.log(data);

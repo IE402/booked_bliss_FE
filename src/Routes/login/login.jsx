@@ -47,12 +47,12 @@ function Login() {
     <div className="login">
       <div className="formContainer">
         <form onSubmit={handleSubmit}>
-          <h1>Welcome back</h1>
-          <input name="username" required minLength={3} maxLength={20} type="text" placeholder="Username" />
-          <input name="password" required type="password" placeholder="Password" />
-          <button disabled={isLoading}>Login</button>
+          <h1>Đăng Nhập</h1>
+          <input name="username" required minLength={3} maxLength={20} type="text" placeholder="Tài khoản" />
+          <input name="password" required type="password" placeholder="Mật khẩu" />
+          <button disabled={isLoading}>Đăng Nhập</button>
           {error && <span>{error}</span>}
-          <Link to="/register">{"Don't"} you have an account?</Link>
+          <Link to="/register">{"Don't"} Bạn chưa có yaif khoản?</Link>
         </form>
       </div>
       <div className="imgContainer">

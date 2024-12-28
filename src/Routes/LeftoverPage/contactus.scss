@@ -1,37 +1,63 @@
 .list-user-thue {
-    padding: 20px;
-    font-family: Arial, sans-serif;
+  max-width: 800px;
+  min-height: 674px !important;
+  margin: 20px auto; // Căn giữa trang
+  padding: 20px;
+  background-color: #f9f9f9; // Nền nhẹ nhàng
+  border-radius: 10px; // Bo góc
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); // Tạo hiệu ứng nổi
+  font-family: Arial, sans-serif;
 
-    h1 {
-        text-align: center;
-        color: #333;
+  h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #333; // Tiêu đề đậm màu
+    text-align: center; // Căn giữa
+  }
+
+  p {
+    font-size: 16px;
+    color: #666; // Màu chữ phụ
+  }
+
+  ul {
+    list-style: none; // Loại bỏ bullet points
+    padding: 0;
+  }
+
+  li {
+    background: #ffffff; // Nền trắng cho mỗi thẻ
+    margin-bottom: 10px;
+    padding: 15px;
+    border: 1px solid #ddd; // Đường viền nhẹ
+    border-radius: 8px; // Bo góc
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); // Hiệu ứng nổi nhẹ
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+    &:hover {
+      transform: translateY(-2px); // Nhẹ nhàng nổi lên khi hover
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
 
-    ul {
-        list-style: none;
-        padding: 0;
-
-        li {
-            margin: 15px 0;
-            padding: 15px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            background-color: #f9f9f9;
-
-            h3 {
-                margin: 0 0 5px 0;
-                color: #222;
-            }
-
-            p {
-                margin: 0;
-                color: #555;
-            }
-        }
+    h3 {
+      margin: 0 0 10px;
+      font-size: 18px;
+      color: #222; // Tông màu chính
     }
 
     p {
-        text-align: center;
-        color: #666;
+      margin: 5px 0;
+      font-size: 14px;
     }
+  }
 }
+
+// Thêm trạng thái tải dữ liệu
+.loading {
+  text-align: center;
+  color: #999;
+  font-size: 16px;
+  margin-top: 20px;
+}
+
+  

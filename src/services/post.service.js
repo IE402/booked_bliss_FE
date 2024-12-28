@@ -20,5 +20,13 @@ export const postService = {
         } catch (err) {
             return err;
         }
-    }
+    },
+    async getPostById(postId){
+        try {
+            const res = await apiRequest.get(`/posts/${postId}`);
+            return res.data;
+        } catch (err) {
+            return err;
+        }
+    },
 };

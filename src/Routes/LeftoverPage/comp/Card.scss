@@ -1,0 +1,73 @@
+// Phong cách chung cho thẻ người dùng
+.card-user-req {
+    background-color: #ffffff; // Nền trắng
+    margin: 10px 0; // Khoảng cách giữa các thẻ
+    padding: 15px; // Khoảng cách bên trong
+    border: 1px solid #ddd; // Đường viền nhẹ
+    border-radius: 8px; // Bo góc
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); // Hiệu ứng nổi
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    display: flex; // Hiển thị theo chiều ngang
+    .info{
+        flex: 3;
+    }
+    button{
+        flex: 1;
+        height: fit-content;
+        width: fit-content !important;
+    }
+  
+    // Hiệu ứng hover
+    &:hover {
+      transform: translateY(-2px); // Nổi nhẹ
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+  
+    h3 {
+      font-size: 18px; // Kích thước lớn hơn
+      color: #333; // Màu đậm
+      margin: 0 0 10px; // Khoảng cách dưới tiêu đề
+    }
+  
+    p {
+      margin: 5px 0; // Khoảng cách giữa các dòng
+      font-size: 14px; // Kích thước nhỏ hơn
+      color: #555; // Màu trung tính
+    }
+  
+    // Nội dung không có thông tin
+    p:empty {
+      color: #999; // Màu chữ xám nhạt
+      font-style: italic; // Chữ nghiêng để chỉ rõ là trống
+    }
+  }
+  
+  // Định dạng khi không có tên, email hoặc thông tin
+  .card-user-req__fallback {
+    color: #999;
+    font-style: italic;
+  }
+  
+  // Phong cách nút "Tạo hợp đồng"
+  .create-contract-btn {
+      display: inline-block;
+      margin-top: 10px; // Khoảng cách trên
+      padding: 10px 20px; // Kích thước nút
+      font-size: 14px; // Kích thước chữ
+      font-weight: bold;
+      color: #fff; // Chữ trắng
+      background-color: #007bff; // Nền xanh
+      border: none; // Không viền
+      border-radius: 5px; // Bo góc
+      cursor: pointer; // Con trỏ chuột
+      transition: background-color 0.3s ease;
+    
+      &:hover {
+        background-color: #0056b3; // Đổi màu khi hover
+      }
+    
+      &:active {
+        background-color: #003f8a; // Đổi màu khi click
+      }
+    }
+  

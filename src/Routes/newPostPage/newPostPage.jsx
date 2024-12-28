@@ -17,19 +17,19 @@ function NewPostPage() {
 
   const navigate = useNavigate();
   useEffect(() => {
-      const loadGeoJSON = async () => {
-        try {
-          const response = await fetch("src/components/map/data.json");
-          if (!response.ok) throw new Error('Failed to load GeoJSON data');
-          const data = await response.json();
-          setGeojsonData(data.features);
-        } catch (error) {
-          console.error("Error loading GeoJSON:", error);
-        }
-      };
-  
-      loadGeoJSON();
-    }, []);
+    const loadGeoJSON = async () => {
+      try {
+        const response = await fetch("src/components/map/data.json");
+        if (!response.ok) throw new Error("Failed to load GeoJSON data");
+        const data = await response.json();
+        setGeojsonData(data.features);
+      } catch (error) {
+        console.error("Error loading GeoJSON:", error);
+      }
+    };
+
+    loadGeoJSON();
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -110,11 +110,13 @@ function NewPostPage() {
             <div className="item">
               <label htmlFor="city">Khu vực</label>
               <select name="city">
-                {geojsonData && geojsonData.map && geojsonData.map((item, index) => (
+                {geojsonData &&
+                  geojsonData.map &&
+                  geojsonData.map((item, index) => (
                     <option key={index} value={item.name}>
-                        {item.name}
+                      {item.name}
                     </option>
-                ))}
+                  ))}
                 {/* <option value="apartment">Apartment</option>
                 <option value="house">House</option>
                 <option value="condo">Condo</option>
@@ -122,34 +124,33 @@ function NewPostPage() {
               </select>
             </div>
 
-
             <div className="item">
-              <label htmlFor="bedroom">Bedroom Number</label>
+              <label htmlFor="bedroom">Số phòng ngủ</label>
               <input min={1} id="bedroom" name="bedroom" type="number" />
             </div>
             <div className="item">
-              <label htmlFor="bathroom">Bathroom Number</label>
+              <label htmlFor="bathroom">Số phòng tắm</label>
               <input min={1} id="bathroom" name="bathroom" type="number" />
             </div>
             <div className="item">
-              <label htmlFor="latitude">Latitude</label>
+              <label htmlFor="latitude">Kinh độ</label>
               <input id="latitude" name="latitude" type="text" />
             </div>
             <div className="item">
-              <label htmlFor="longitude">Longitude</label>
+              <label htmlFor="longitude">Vĩ độ</label>
               <input id="longitude" name="longitude" type="text" />
             </div>
             <div className="item">
-              <label htmlFor="type">Type</label>
+              <label htmlFor="type">Loại</label>
               <select name="type">
                 <option value="rent" defaultChecked>
-                  Rent
+                  Thuê
                 </option>
-                <option value="buy">Buy</option>
+                <option value="buy">Mua</option>
               </select>
             </div>
             <div className="item">
-              <label htmlFor="type">Property</label>
+              <label htmlFor="type">Loại Phòng</label>
               <select name="property">
                 <option value="apartment">Apartment</option>
                 <option value="house">House</option>
@@ -158,18 +159,18 @@ function NewPostPage() {
               </select>
             </div>
             <div className="item">
-              <label htmlFor="utilities">Utilities Policy</label>
+              <label htmlFor="utilities">Chính sách tiện ích</label>
               <select name="utilities">
-                <option value="owner">Owner is responsible</option>
-                <option value="tenant">Tenant is responsible</option>
-                <option value="shared">Shared</option>
+                <option value="owner">Chủ nhà chịu trách nhiệm</option>
+                <option value="tenant">Người thuê chịu trách nhiệm</option>
+                <option value="shared">Chia sẻ</option>
               </select>
             </div>
             <div className="item">
-              <label htmlFor="pet">Pet Policy</label>
+              <label htmlFor="pet">Thú cưng</label>
               <select name="pet">
-                <option value="allowed">Allowed</option>
-                <option value="not-allowed">Not Allowed</option>
+                <option value="allowed">Được phép</option>
+                <option value="not-allowed">Không được phép</option>
               </select>
             </div>
             <div className="item">
@@ -182,7 +183,7 @@ function NewPostPage() {
               />
             </div>
             <div className="item">
-              <label htmlFor="size">Total Size (sqft)</label>
+              <label htmlFor="size">Chiểu rộng</label>
               <input min={0} id="size" name="size" type="number" />
             </div>
             <div className="item">
@@ -190,20 +191,20 @@ function NewPostPage() {
               <input min={0} id="roomSpace" name="roomSpace" type="number" />
             </div>
             <div className="item">
-              <label htmlFor="school">School</label>
+              <label htmlFor="school">Trường học</label>
               <input min={0} id="school" name="school" type="number" />
             </div>
             <div className="item">
-              <label htmlFor="bus">Bus</label>
+              <label htmlFor="bus">Trạm xe bus</label>
               <input min={0} id="bus" name="bus" type="number" />
             </div>
             <div className="item">
-              <label htmlFor="restaurant">Restaurant</label>
+              <label htmlFor="restaurant">Chợ</label>
               <input min={0} id="restaurant" name="restaurant" type="number" />
             </div>
 
-            <button className="sendButton">Upload</button>
-            {error && <span>error</span>}
+            <button className="sendButton">Tải lên</button>
+            {error && <span>Lỗi</span>}
           </form>
         </div>
       </div>
